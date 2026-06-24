@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import { Github, Mail, Terminal, ChevronDown, ArrowUpRight, Award, ImagePlus, X } from "lucide-react";
 
-const NAV_LINKS = ["Karya", "Keahlian", "Sertifikasi", "Kontak"];
+const NAV_LINKS = [
+  { label: "Proyek", id: "work" },
+  { label: "Keahlian", id: "skills" },
+  { label: "Sertifikasi", id: "certifications" },
+  { label: "Kontak", id: "contact" },
+];
 
 const MAIN_PROJECTS = [
   {
@@ -147,18 +152,18 @@ function NavBar() {
           <span className="text-foreground font-medium">darfian</span>
           <span className="text-muted-foreground">.dev</span>
         </button>
-        <span className="hidden md:flex items-center gap-8">
+        <ul className="hidden md:flex items-center gap-8">
           {NAV_LINKS.map((link) => (
-            <li key={link}>
+            <li key={link.id}>
               <button
-                onClick={() => scrollTo(link.toLowerCase())}
+                onClick={() => scrollTo(link.id)}
                 className="font-mono text-xs tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors"
               >
-                {link}
+                {link.label}
               </button>
             </li>
           ))}
-        </span>
+        </ul>
         <a
           href="mailto:darfianardiansyah@gmail.com"
           className="hidden md:flex items-center gap-2 border border-border px-4 py-1.5 font-mono text-xs tracking-wider uppercase hover:bg-foreground hover:text-background transition-all duration-200"
