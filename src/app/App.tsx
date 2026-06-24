@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Github, Mail, Terminal, ChevronDown, ArrowUpRight, Award, ImagePlus, X } from "lucide-react";
 
-const NAV_LINKS = ["Work", "Skills", "Certifications", "Contact"];
+const NAV_LINKS = ["Karya", "Keahlian", "Sertifikasi", "Kontak"];
 
 const MAIN_PROJECTS = [
   {
@@ -15,7 +15,7 @@ const MAIN_PROJECTS = [
       "Sinkronisasi data sektoral real-time",
     ],
     tags: ["Laravel", "MySQL", "Bootstrap", "REST API", "jQuery", "DataTables"],
-    year: "2021–Now",
+    year: "2021–Sekarang",
     screenshot: "/screenshots/satu-data-kota-malang.png",
   },
   {
@@ -86,7 +86,7 @@ const MINI_PROJECTS = [
     title: "Health Buddy — AI Health Assistant",
     description:
       "Chatbot kesehatan berbasis Google Gemini API untuk konsultasi kesehatan dasar, nutrisi, olahraga, dan informasi kesehatan umum.",
-    tags: ["Laravel", "Gemini API", "AI", "Chatbot"],
+    tags: ["Node.js", "Gemini API", "AI", "Chatbot"],
     github: "https://github.com/darfianardiansyah/gemini-ai-api-trial",
     screenshot: null,
   },
@@ -111,7 +111,7 @@ const SKILLS = [
 const CERTIFICATIONS = [
   { name: "HackerRank — SQL (Advanced)", year: "2025" },
   { name: "Dicoding — Dasar Manajemen Proyek", year: "2024" },
-  { name: "ISO/IEC 27001:2022 — Info Security Awareness", year: "2023" },
+  { name: "Training Awareness ISO/IEC 27001:2022 Information Security Management System", year: "2023" },
   { name: "Dicoding — Dasar Pemrograman Web", year: "2020" },
   { name: "Cisco — Introduction to Networks", year: "2020" },
   { name: "Digital Talent Scholarship — Big Data Analytics", year: "2019" },
@@ -147,7 +147,7 @@ function NavBar() {
           <span className="text-foreground font-medium">darfian</span>
           <span className="text-muted-foreground">.dev</span>
         </button>
-        <ul className="hidden md:flex items-center gap-8">
+        <span className="hidden md:flex items-center gap-8">
           {NAV_LINKS.map((link) => (
             <li key={link}>
               <button
@@ -158,7 +158,7 @@ function NavBar() {
               </button>
             </li>
           ))}
-        </ul>
+        </span>
         <a
           href="mailto:darfianardiansyah@gmail.com"
           className="hidden md:flex items-center gap-2 border border-border px-4 py-1.5 font-mono text-xs tracking-wider uppercase hover:bg-foreground hover:text-background transition-all duration-200"
@@ -209,7 +209,7 @@ function Hero() {
               className="flex items-center gap-2 font-mono text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               <Mail size={16} />
-              Email Me
+              Email Saya
             </a>
           </div>
         </div>
@@ -264,7 +264,7 @@ function ScreenshotFrame({
     <div className="w-full aspect-video bg-secondary border border-dashed border-border flex flex-col items-center justify-center gap-3 group-hover:border-muted-foreground/30 transition-colors duration-200">
       <ImagePlus size={20} className="text-muted-foreground/20" />
       <span className="font-mono text-[10px] tracking-widest uppercase text-muted-foreground/20">
-        Add Screenshot
+        Tambah Screenshot
       </span>
     </div>
   );
@@ -421,13 +421,13 @@ function Work() {
       {/* Main Projects */}
       <div className="flex items-baseline justify-between mb-16 border-b border-border pb-6">
         <div>
-          <h2 className="font-sans text-4xl font-black tracking-tighter">Selected Work</h2>
+          <h2 className="font-sans text-4xl font-black tracking-tighter">Proyek Pilihan</h2>
           <p className="font-mono text-xs text-muted-foreground mt-2 tracking-widest uppercase">
             Government Projects — Diskominfo Kota Malang
           </p>
         </div>
         <span className="font-mono text-xs text-muted-foreground tracking-widest uppercase">
-          {MAIN_PROJECTS.length} Projects
+          {MAIN_PROJECTS.length} Proyek
         </span>
       </div>
 
@@ -442,13 +442,13 @@ function Work() {
       {/* Mini Projects */}
       <div className="flex items-baseline justify-between mb-16 border-b border-border pb-6">
         <div>
-          <h2 className="font-sans text-4xl font-black tracking-tighter">Mini Projects</h2>
+          <h2 className="font-sans text-4xl font-black tracking-tighter">Mini Proyek</h2>
           <p className="font-mono text-xs text-muted-foreground mt-2 tracking-widest uppercase">
-            Personal
+            Pribadi
           </p>
         </div>
         <span className="font-mono text-xs text-muted-foreground tracking-widest uppercase">
-          {MINI_PROJECTS.length} Projects
+          {MINI_PROJECTS.length} Proyek
         </span>
       </div>
 
@@ -469,7 +469,7 @@ function Skills() {
   return (
     <section id="skills" className="py-32 px-6 max-w-6xl mx-auto">
       <div className="flex items-baseline justify-between mb-16 border-b border-border pb-6">
-        <h2 className="font-sans text-4xl font-black tracking-tighter">Skills</h2>
+        <h2 className="font-sans text-4xl font-black tracking-tighter">Keahlian</h2>
         <Terminal size={16} className="text-muted-foreground" />
       </div>
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border">
@@ -497,7 +497,7 @@ function Certifications() {
   return (
     <section id="certifications" className="py-32 px-6 max-w-6xl mx-auto">
       <div className="flex items-baseline justify-between mb-16 border-b border-border pb-6">
-        <h2 className="font-sans text-4xl font-black tracking-tighter">Certifications</h2>
+        <h2 className="font-sans text-4xl font-black tracking-tighter">Sertifikasi</h2>
         <Award size={16} className="text-muted-foreground" />
       </div>
       <div className="grid gap-px bg-border">
@@ -525,7 +525,7 @@ function Contact() {
     <section id="contact" className="py-32 px-6 max-w-6xl mx-auto border-t border-border">
       <div className="text-center max-w-2xl mx-auto">
         <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-muted-foreground mb-6">
-          Contact
+          Kontak
         </p>
         <h2 className="font-sans text-5xl font-black tracking-tighter mb-6">
           {"Let's work"}
@@ -563,7 +563,7 @@ function Footer() {
   return (
     <footer className="border-t border-border px-6 py-8 max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
       <span className="font-mono text-xs text-muted-foreground">
-        © 2025 Darfian Ardiansyah. All rights reserved.
+        © 2026 Darfian Ardiansyah. All rights reserved.
       </span>
       <span className="font-mono text-xs text-muted-foreground/40">Fullstack Web Developer</span>
     </footer>
