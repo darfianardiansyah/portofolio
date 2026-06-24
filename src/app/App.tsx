@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Github, Mail, Terminal, ChevronDown, ArrowUpRight, Award, ImagePlus } from "lucide-react";
+import { Github, Mail, Terminal, ChevronDown, ArrowUpRight, Award, ImagePlus, X } from "lucide-react";
 
 const NAV_LINKS = ["Work", "Skills", "Certifications", "Contact"];
 
@@ -221,16 +221,41 @@ function Hero() {
   );
 }
 
-function ScreenshotFrame({ src, alt }: { src: string | null; alt: string }) {
+function ScreenshotFrame({
+  src,
+  alt,
+  onOpen,
+}: {
+  src: string | null;
+  alt: string;
+  onOpen?: () => void;
+}) {
   if (src) {
+    const image = (
+      <img
+        src={src}
+        alt={alt}
+        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+        loading="lazy"
+      />
+    );
+
+    if (onOpen) {
+      return (
+        <button
+          type="button"
+          onClick={onOpen}
+          className="w-full aspect-video bg-secondary border border-border overflow-hidden cursor-zoom-in focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background"
+          aria-label={`Open ${alt}`}
+        >
+          {image}
+        </button>
+      );
+    }
+
     return (
       <div className="w-full aspect-video bg-secondary border border-border overflow-hidden">
-        <img
-          src={src}
-          alt={alt}
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-          loading="lazy"
-        />
+        {image}
       </div>
     );
   }
@@ -245,10 +270,68 @@ function ScreenshotFrame({ src, alt }: { src: string | null; alt: string }) {
   );
 }
 
-function MainProjectCard({ project }: { project: (typeof MAIN_PROJECTS)[0] }) {
+function ScreenshotLightbox({
+  screenshot,
+  onClose,
+}: {
+  screenshot: { src: string; title: string } | null;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    if (!screenshot) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [screenshot, onClose]);
+
+  if (!screenshot) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-sm px-4 py-6 md:px-10 md:py-10"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`Screenshot ${screenshot.title}`}
+      onClick={onClose}
+    >
+      <button
+        type="button"
+        onClick={onClose}
+        className="absolute right-4 top-4 md:right-8 md:top-8 inline-flex h-10 w-10 items-center justify-center border border-border bg-background text-muted-foreground hover:text-foreground transition-colors"
+        aria-label="Close screenshot preview"
+      >
+        <X size={18} />
+      </button>
+      <div className="flex h-full w-full items-center justify-center">
+        <img
+          src={screenshot.src}
+          alt={`Screenshot ${screenshot.title}`}
+          className="max-h-full max-w-full object-contain border border-border bg-secondary"
+          onClick={(event) => event.stopPropagation()}
+        />
+      </div>
+    </div>
+  );
+}
+
+function MainProjectCard({
+  project,
+  onOpenScreenshot,
+}: {
+  project: (typeof MAIN_PROJECTS)[0];
+  onOpenScreenshot: (project: (typeof MAIN_PROJECTS)[0]) => void;
+}) {
   return (
     <article className="border border-border group hover:bg-card transition-colors duration-200">
-      <ScreenshotFrame src={project.screenshot} alt={`Screenshot ${project.title}`} />
+      <ScreenshotFrame
+        src={project.screenshot}
+        alt={`Screenshot ${project.title}`}
+        onOpen={() => onOpenScreenshot(project)}
+      />
       <div className="p-8">
         <div className="flex items-start justify-between mb-4">
           <span className="font-mono text-xs text-muted-foreground/30">{project.id}</span>
@@ -282,7 +365,6 @@ function MainProjectCard({ project }: { project: (typeof MAIN_PROJECTS)[0] }) {
 function MiniProjectCard({ project }: { project: (typeof MINI_PROJECTS)[0] }) {
   return (
     <article className="border border-border group hover:bg-card transition-colors duration-200">
-      <ScreenshotFrame src={project.screenshot} alt={`Screenshot ${project.title}`} />
       <div className="p-6">
         <div className="flex items-start justify-between mb-3">
           <span className="font-mono text-xs text-muted-foreground/30">{project.id}</span>
@@ -308,13 +390,33 @@ function MiniProjectCard({ project }: { project: (typeof MINI_PROJECTS)[0] }) {
             </span>
           ))}
         </div>
+        <a
+          href={project.github}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-6 inline-flex items-center gap-2 font-mono text-xs tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <Github size={14} />
+          View GitHub
+          <ArrowUpRight size={12} />
+        </a>
       </div>
     </article>
   );
 }
 
 function Work() {
+  const [activeScreenshot, setActiveScreenshot] = useState<{ src: string; title: string } | null>(
+    null
+  );
+
+  const openScreenshot = (project: (typeof MAIN_PROJECTS)[0]) => {
+    if (!project.screenshot) return;
+    setActiveScreenshot({ src: project.screenshot, title: project.title });
+  };
+
   return (
+    <>
     <section id="work" className="py-32 px-6 max-w-6xl mx-auto">
       {/* Main Projects */}
       <div className="flex items-baseline justify-between mb-16 border-b border-border pb-6">
@@ -332,7 +434,7 @@ function Work() {
       <div className="grid md:grid-cols-2 gap-px bg-border mb-24">
         {MAIN_PROJECTS.map((p) => (
           <div key={p.id} className="bg-background">
-            <MainProjectCard project={p} />
+            <MainProjectCard project={p} onOpenScreenshot={openScreenshot} />
           </div>
         ))}
       </div>
@@ -358,6 +460,8 @@ function Work() {
         ))}
       </div>
     </section>
+    <ScreenshotLightbox screenshot={activeScreenshot} onClose={() => setActiveScreenshot(null)} />
+    </>
   );
 }
 
@@ -429,7 +533,7 @@ function Contact() {
           <span className="text-muted-foreground">together.</span>
         </h2>
         <p className="text-muted-foreground mb-12">
-          Open to full-time roles, freelance projects, and technical collaborations.
+          {/* Open to full-time roles, freelance projects, and technical collaborations. */}
         </p>
         <a
           href="mailto:darfianardiansyah@gmail.com"
@@ -447,7 +551,7 @@ function Contact() {
             href="tel:085954551591"
             className="font-mono text-xs tracking-wider text-muted-foreground hover:text-foreground transition-colors"
           >
-            +62 859-5455-1591
+            {/* +62 859-5455-1591 */}
           </a>
         </div>
       </div>
