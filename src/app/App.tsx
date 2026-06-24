@@ -114,12 +114,12 @@ const SKILLS = [
 ];
 
 const CERTIFICATIONS = [
-  { name: "HackerRank — SQL (Advanced)", year: "2025" },
-  { name: "Dicoding — Dasar Manajemen Proyek", year: "2024" },
-  { name: "Training Awareness ISO/IEC 27001:2022 Information Security Management System", year: "2023" },
-  { name: "Dicoding — Dasar Pemrograman Web", year: "2020" },
-  { name: "Cisco — Introduction to Networks", year: "2020" },
-  { name: "Digital Talent Scholarship — Big Data Analytics", year: "2019" },
+  { name: "HackerRank — SQL (Advanced)", year: "2025", certificate: "/certificates/hackerrank-sql.png" },
+  { name: "Dicoding — Dasar Manajemen Proyek", year: "2024", certificate: "/certificates/dicoding-manajemen-proyek.png" },
+  { name: "Training Awareness ISO/IEC 27001:2022 Information Security Management System", year: "2023", certificate: "/certificates/iso-iec-27001.png" },
+  { name: "Dicoding — Dasar Pemrograman Web", year: "2020", certificate: "/certificates/dicoding-pemrograman-web.png" },
+  { name: "Cisco — Introduction to Networks", year: "2020", certificate: "/certificates/cisco-networks.png" },
+  { name: "Digital Talent Scholarship — Big Data Analytics", year: "2019", certificate: "/certificates/digital-talent-big-data.png" },
 ];
 
 function useScrollY() {
@@ -323,6 +323,65 @@ function ScreenshotLightbox({
   );
 }
 
+function CertificateLightbox({
+  certificate,
+  onClose,
+}: {
+  certificate: { src: string; name: string } | null;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    if (!certificate) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [certificate, onClose]);
+
+  if (!certificate) return null;
+
+  const isPDF = certificate.src.toLowerCase().endsWith(".pdf");
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-sm px-4 py-6 md:px-10 md:py-10"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`Certificate ${certificate.name}`}
+      onClick={onClose}
+    >
+      <button
+        type="button"
+        onClick={onClose}
+        className="absolute right-4 top-4 md:right-8 md:top-8 inline-flex h-10 w-10 items-center justify-center border border-border bg-background text-muted-foreground hover:text-foreground transition-colors"
+        aria-label="Close certificate preview"
+      >
+        <X size={18} />
+      </button>
+      <div className="flex h-full w-full items-center justify-center">
+        {isPDF ? (
+          <iframe
+            src={certificate.src}
+            title={`Certificate ${certificate.name}`}
+            className="h-full w-full max-w-4xl border border-border rounded"
+            onClick={(event) => event.stopPropagation()}
+          />
+        ) : (
+          <img
+            src={certificate.src}
+            alt={`Certificate ${certificate.name}`}
+            className="max-h-full max-w-full object-contain border border-border bg-secondary"
+            onClick={(event) => event.stopPropagation()}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
 function MainProjectCard({
   project,
   onOpenScreenshot,
@@ -499,7 +558,16 @@ function Skills() {
 }
 
 function Certifications() {
+  const [activeCertificate, setActiveCertificate] = useState<{ src: string; name: string } | null>(
+    null
+  );
+
+  const openCertificate = (cert: (typeof CERTIFICATIONS)[0]) => {
+    setActiveCertificate({ src: cert.certificate, name: cert.name });
+  };
+
   return (
+    <>
     <section id="certifications" className="py-32 px-6 max-w-6xl mx-auto">
       <div className="flex items-baseline justify-between mb-16 border-b border-border pb-6">
         <h2 className="font-sans text-4xl font-black tracking-tighter">Sertifikasi</h2>
@@ -507,9 +575,10 @@ function Certifications() {
       </div>
       <div className="grid gap-px bg-border">
         {CERTIFICATIONS.map((cert, i) => (
-          <div
+          <button
             key={cert.name}
-            className="bg-background flex items-center justify-between px-8 py-6 hover:bg-card transition-colors duration-200"
+            onClick={() => openCertificate(cert)}
+            className="bg-background flex items-center justify-between px-8 py-6 hover:bg-card transition-colors duration-200 cursor-pointer text-left"
           >
             <div className="flex items-center gap-8">
               <span className="font-mono text-xs text-muted-foreground/30 w-6 shrink-0">
@@ -518,10 +587,12 @@ function Certifications() {
               <span className="font-sans font-medium text-foreground">{cert.name}</span>
             </div>
             <span className="font-mono text-xs text-muted-foreground/50 shrink-0">{cert.year}</span>
-          </div>
+          </button>
         ))}
       </div>
     </section>
+    <CertificateLightbox certificate={activeCertificate} onClose={() => setActiveCertificate(null)} />
+    </>
   );
 }
 
