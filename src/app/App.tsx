@@ -1,5 +1,18 @@
-import { useState, useEffect } from "react";
-import { Github, Mail, Terminal, ChevronDown, ArrowUpRight, Award, ImagePlus, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import {
+  ArrowUpRight,
+  Award,
+  BriefcaseBusiness,
+  ChevronDown,
+  Code2,
+  Github,
+  ImagePlus,
+  Mail,
+  ShieldCheck,
+  Terminal,
+  X,
+} from "lucide-react";
 
 const NAV_LINKS = [
   { label: "Proyek", id: "work" },
@@ -122,54 +135,149 @@ const CERTIFICATIONS = [
   { name: "Digital Talent Scholarship — Big Data Analytics", year: "2019", certificate: "/certificates/digital-talent-big-data.png" },
 ];
 
+type MainProject = (typeof MAIN_PROJECTS)[0];
+type MiniProject = (typeof MINI_PROJECTS)[0];
+type Certification = (typeof CERTIFICATIONS)[0];
+type LightboxItem = { src: string; title: string; type: "screenshot" | "certificate" } | null;
+
+const reveal = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const textFixes: Record<string, string> = {
+  "â€“": "-",
+  "â€”": "-",
+  "Â©": "©",
+};
+
+function displayText(value: string) {
+  return Object.entries(textFixes).reduce(
+    (text, [broken, fixed]) => text.replaceAll(broken, fixed),
+    value
+  );
+}
+
 function useScrollY() {
   const [y, setY] = useState(0);
+
   useEffect(() => {
     const handler = () => setY(window.scrollY);
+    handler();
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
   }, []);
+
   return y;
+}
+
+function scrollToSection(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function Reveal({
+  children,
+  className,
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  return (
+    <motion.div
+      variants={reveal}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function SectionHeader({
+  eyebrow,
+  title,
+  description,
+  meta,
+  icon: Icon,
+}: {
+  eyebrow: string;
+  title: string;
+  description: string;
+  meta?: string;
+  icon?: typeof BriefcaseBusiness;
+}) {
+  return (
+    <Reveal className="mb-10 border-b border-slate-200 pb-7 md:mb-14 md:flex md:items-end md:justify-between md:gap-10">
+      <div className="max-w-2xl">
+        <div className="mb-4 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500">
+          {Icon ? <Icon size={15} className="text-cyan-700" /> : null}
+          {eyebrow}
+        </div>
+        <h2 className="text-3xl font-semibold tracking-tight text-slate-950 md:text-5xl">
+          {title}
+        </h2>
+        <p className="mt-4 text-base leading-7 text-slate-600 md:text-lg">{description}</p>
+      </div>
+      {meta ? (
+        <span className="mt-6 inline-flex rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 md:mt-0">
+          {meta}
+        </span>
+      ) : null}
+    </Reveal>
+  );
 }
 
 function NavBar() {
   const scrollY = useScrollY();
-  const scrolled = scrollY > 40;
-  const scrollTo = (id: string) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const scrolled = scrollY > 24;
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "border-b border-border bg-background/95 backdrop-blur-sm" : ""
+      className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "border-b border-slate-200 bg-white/90 shadow-sm backdrop-blur-xl"
+          : "bg-white/70 backdrop-blur-md"
       }`}
     >
-      <nav className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 md:px-8">
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="font-mono text-sm hover:text-foreground transition-colors"
+          className="group flex items-center gap-3 text-left"
+          aria-label="Kembali ke awal halaman"
         >
-          <span className="text-foreground font-medium">darfian</span>
-          <span className="text-muted-foreground">.dev</span>
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-950 text-sm font-semibold text-white">
+            DA
+          </span>
+          <span className="hidden leading-tight sm:block">
+            <span className="block text-sm font-semibold text-slate-950">Darfian Ardiansyah</span>
+            <span className="block text-xs text-slate-500">Fullstack Developer</span>
+          </span>
         </button>
-        <ul className="hidden md:flex items-center gap-8">
+
+        <ul className="hidden items-center gap-1 rounded-full border border-slate-200 bg-white p-1 md:flex">
           {NAV_LINKS.map((link) => (
             <li key={link.id}>
               <button
-                onClick={() => scrollTo(link.id)}
-                className="font-mono text-xs tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors"
+                onClick={() => scrollToSection(link.id)}
+                className="rounded-full px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-950"
               >
                 {link.label}
               </button>
             </li>
           ))}
         </ul>
+
         <a
           href="mailto:darfianardiansyah@gmail.com"
-          className="hidden md:flex items-center gap-2 border border-border px-4 py-1.5 font-mono text-xs tracking-wider uppercase hover:bg-foreground hover:text-background transition-all duration-200"
+          className="inline-flex h-10 items-center gap-2 rounded-full bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-cyan-800"
         >
-          <Mail size={12} />
-          Hire Me
+          <Mail size={16} />
+          <span className="hidden sm:inline">Kontak</span>
         </a>
       </nav>
     </header>
@@ -178,50 +286,94 @@ function NavBar() {
 
 function Hero() {
   return (
-    <section className="min-h-screen flex flex-col justify-end pb-24 pt-32 px-6 max-w-6xl mx-auto relative">
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div
-          className="absolute right-0 top-0 w-1/2 h-full opacity-[0.03]"
-          style={{
-            backgroundImage:
-              "repeating-linear-gradient(90deg,#fff 0px,#fff 1px,transparent 1px,transparent 40px),repeating-linear-gradient(0deg,#fff 0px,#fff 1px,transparent 1px,transparent 40px)",
-          }}
-        />
-      </div>
-      <div className="relative">
-        <p className="font-mono text-xs tracking-[0.3em] uppercase text-muted-foreground mb-8">
-          Fullstack Web Developer — Open to Opportunities
-        </p>
-        <h1 className="font-sans text-[clamp(3rem,10vw,8rem)] font-black leading-[0.9] tracking-tighter text-foreground mb-8">
-          Darfian
-          <br />
-          <span className="text-muted-foreground/40">Ardiansyah</span>
-        </h1>
-        <div className="max-w-xl">
-          <p className="text-lg text-muted-foreground leading-relaxed mb-12">
-            Programmer dengan 5+ tahun pengalaman membangun aplikasi layanan publik untuk Pemerintah
-            Kota Malang. Fokus pada Laravel, integrasi REST API, dan desain database yang skalabel.
+    <section className="relative overflow-hidden bg-white pt-28">
+      <div className="mx-auto grid min-h-[calc(100vh-7rem)] max-w-7xl items-center gap-12 px-5 pb-16 md:grid-cols-[1.05fr_0.95fr] md:px-8 lg:gap-20">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600">
+            <ShieldCheck size={14} className="text-cyan-700" />
+            Open to Opportunities
+          </div>
+          <h1 className="max-w-4xl text-5xl font-semibold leading-[1.02] tracking-tight text-slate-950 sm:text-6xl lg:text-7xl">
+            Fullstack Developer untuk sistem web yang rapi, terukur, dan siap digunakan.
+          </h1>
+          <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-600">
+            Saya Darfian Ardiansyah, programmer dengan pengalaman 5+ tahun membangun aplikasi
+            layanan publik, integrasi REST API, dashboard data, dan sistem operasional untuk
+            kebutuhan lintas instansi.
           </p>
-          <div className="flex items-center gap-6">
+
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <button
-              onClick={() => document.getElementById("work")?.scrollIntoView({ behavior: "smooth" })}
-              className="flex items-center gap-3 bg-foreground text-background px-6 py-3 font-mono text-sm tracking-wider uppercase hover:bg-muted-foreground transition-colors"
+              onClick={() => scrollToSection("work")}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-cyan-800"
             >
-              View Work <ArrowUpRight size={14} />
+              Lihat Proyek
+              <ArrowUpRight size={17} />
             </button>
             <a
               href="mailto:darfianardiansyah@gmail.com"
-              className="flex items-center gap-2 font-mono text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-800 transition hover:border-cyan-700 hover:text-cyan-800"
             >
-              <Mail size={16} />
+              <Mail size={17} />
               Email Saya
             </a>
           </div>
-        </div>
+
+          <div className="mt-10 grid max-w-2xl grid-cols-3 gap-4 border-t border-slate-200 pt-6">
+            {[
+              ["5+ Tahun", "Pengalaman"],
+              [`${MAIN_PROJECTS.length}+`, "Proyek utama"],
+              [`${CERTIFICATIONS.length}`, "Sertifikasi"],
+            ].map(([value, label]) => (
+              <div key={label}>
+                <p className="text-2xl font-semibold tracking-tight text-slate-950">{value}</p>
+                <p className="mt-1 text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
+                  {label}
+                </p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.75, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+          className="relative"
+        >
+          <div className="overflow-hidden rounded-[1.5rem] border border-slate-200 bg-slate-950 shadow-2xl shadow-slate-200">
+            <div className="flex items-center gap-2 border-b border-white/10 px-5 py-4">
+              <span className="h-2.5 w-2.5 rounded-full bg-rose-400" />
+              <span className="h-2.5 w-2.5 rounded-full bg-amber-300" />
+              <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+              <span className="ml-auto text-xs font-medium text-slate-400">portfolio-home.png</span>
+            </div>
+            <img
+              src="/screenshots/portfolio-home.png"
+              alt="Preview halaman portofolio"
+              className="aspect-[4/3] w-full object-cover object-top opacity-95"
+            />
+          </div>
+          <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-5">
+            <p className="text-sm font-semibold text-slate-950">Fokus profesional</p>
+            <p className="mt-2 text-sm leading-6 text-slate-600">
+              Backend Laravel, desain database, integrasi API, dan dashboard yang membantu tim
+              mengambil keputusan dari data operasional.
+            </p>
+          </div>
+        </motion.div>
       </div>
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground/40">
-        <ChevronDown size={16} className="animate-bounce" />
-      </div>
+      <button
+        onClick={() => scrollToSection("work")}
+        className="absolute bottom-5 left-1/2 hidden -translate-x-1/2 text-slate-400 transition hover:text-slate-700 md:block"
+        aria-label="Scroll ke proyek"
+      >
+        <ChevronDown size={22} />
+      </button>
     </section>
   );
 }
@@ -236,422 +388,395 @@ function ScreenshotFrame({
   onOpen?: () => void;
 }) {
   if (src) {
-    const image = (
-      <img
-        src={src}
-        alt={alt}
-        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-        loading="lazy"
-      />
-    );
-
-    if (onOpen) {
-      return (
-        <button
-          type="button"
-          onClick={onOpen}
-          className="w-full aspect-video bg-secondary border border-border overflow-hidden cursor-zoom-in focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background"
-          aria-label={`Open ${alt}`}
-        >
-          {image}
-        </button>
-      );
-    }
-
     return (
-      <div className="w-full aspect-video bg-secondary border border-border overflow-hidden">
-        {image}
-      </div>
+      <button
+        type="button"
+        onClick={onOpen}
+        className="group/image relative block aspect-video w-full overflow-hidden bg-slate-100 text-left"
+        aria-label={`Buka ${alt}`}
+      >
+        <img
+          src={src}
+          alt={alt}
+          className="h-full w-full object-cover object-top transition duration-500 group-hover/image:scale-[1.03]"
+          loading="lazy"
+        />
+        <span className="absolute inset-x-4 bottom-4 inline-flex w-fit items-center gap-2 rounded-full bg-white/92 px-3 py-2 text-xs font-semibold text-slate-800 opacity-0 shadow-sm backdrop-blur transition group-hover/image:opacity-100">
+          Preview screenshot
+          <ArrowUpRight size={14} />
+        </span>
+      </button>
     );
   }
 
   return (
-    <div className="w-full aspect-video bg-secondary border border-dashed border-border flex flex-col items-center justify-center gap-3 group-hover:border-muted-foreground/30 transition-colors duration-200">
-      <ImagePlus size={20} className="text-muted-foreground/20" />
-      <span className="font-mono text-[10px] tracking-widest uppercase text-muted-foreground/20">
-        Tambah Screenshot
-      </span>
+    <div className="flex aspect-video w-full flex-col items-center justify-center gap-3 border border-dashed border-slate-300 bg-slate-50 text-slate-400">
+      <ImagePlus size={22} />
+      <span className="text-xs font-semibold uppercase tracking-[0.18em]">Screenshot belum tersedia</span>
     </div>
   );
 }
 
-function ScreenshotLightbox({
-  screenshot,
-  onClose,
-}: {
-  screenshot: { src: string; title: string } | null;
-  onClose: () => void;
-}) {
-  useEffect(() => {
-    if (!screenshot) return;
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [screenshot, onClose]);
-
-  if (!screenshot) return null;
-
+function TagList({ tags }: { tags: string[] }) {
   return (
-    <div
-      className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-sm px-4 py-6 md:px-10 md:py-10"
-      role="dialog"
-      aria-modal="true"
-      aria-label={`Screenshot ${screenshot.title}`}
-      onClick={onClose}
-    >
-      <button
-        type="button"
-        onClick={onClose}
-        className="absolute right-4 top-4 md:right-8 md:top-8 inline-flex h-10 w-10 items-center justify-center border border-border bg-background text-muted-foreground hover:text-foreground transition-colors"
-        aria-label="Close screenshot preview"
-      >
-        <X size={18} />
-      </button>
-      <div className="flex h-full w-full items-center justify-center">
-        <img
-          src={screenshot.src}
-          alt={`Screenshot ${screenshot.title}`}
-          className="max-h-full max-w-full object-contain border border-border bg-secondary"
-          onClick={(event) => event.stopPropagation()}
-        />
-      </div>
-    </div>
-  );
-}
-
-function CertificateLightbox({
-  certificate,
-  onClose,
-}: {
-  certificate: { src: string; name: string } | null;
-  onClose: () => void;
-}) {
-  useEffect(() => {
-    if (!certificate) return;
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [certificate, onClose]);
-
-  if (!certificate) return null;
-
-  const isPDF = certificate.src.toLowerCase().endsWith(".pdf");
-
-  return (
-    <div
-      className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-sm px-4 py-6 md:px-10 md:py-10"
-      role="dialog"
-      aria-modal="true"
-      aria-label={`Certificate ${certificate.name}`}
-      onClick={onClose}
-    >
-      <button
-        type="button"
-        onClick={onClose}
-        className="absolute right-4 top-4 md:right-8 md:top-8 inline-flex h-10 w-10 items-center justify-center border border-border bg-background text-muted-foreground hover:text-foreground transition-colors"
-        aria-label="Close certificate preview"
-      >
-        <X size={18} />
-      </button>
-      <div className="flex h-full w-full items-center justify-center">
-        {isPDF ? (
-          <iframe
-            src={certificate.src}
-            title={`Certificate ${certificate.name}`}
-            className="h-full w-full max-w-4xl border border-border rounded"
-            onClick={(event) => event.stopPropagation()}
-          />
-        ) : (
-          <img
-            src={certificate.src}
-            alt={`Certificate ${certificate.name}`}
-            className="max-h-full max-w-full object-contain border border-border bg-secondary"
-            onClick={(event) => event.stopPropagation()}
-          />
-        )}
-      </div>
+    <div className="flex flex-wrap gap-2">
+      {tags.map((tag) => (
+        <span
+          key={tag}
+          className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600"
+        >
+          {tag}
+        </span>
+      ))}
     </div>
   );
 }
 
 function MainProjectCard({
   project,
+  index,
   onOpenScreenshot,
 }: {
-  project: (typeof MAIN_PROJECTS)[0];
-  onOpenScreenshot: (project: (typeof MAIN_PROJECTS)[0]) => void;
+  project: MainProject;
+  index: number;
+  onOpenScreenshot: (project: MainProject) => void;
 }) {
   return (
-    <article className="border border-border group hover:bg-card transition-colors duration-200">
-      <ScreenshotFrame
-        src={project.screenshot}
-        alt={`Screenshot ${project.title}`}
-        onOpen={() => onOpenScreenshot(project)}
-      />
-      <div className="p-8">
-        <div className="flex items-start justify-between mb-4">
-          <span className="font-mono text-xs text-muted-foreground/30">{project.id}</span>
-          <span className="font-mono text-xs text-muted-foreground/40">{project.year}</span>
-        </div>
-        <h3 className="font-sans text-xl font-semibold text-foreground mb-3">{project.title}</h3>
-        <p className="text-sm text-muted-foreground leading-relaxed mb-6">{project.description}</p>
-        <ul className="space-y-1.5 mb-6">
-          {project.highlights.map((h) => (
-            <li key={h} className="flex items-start gap-3 text-sm text-muted-foreground">
-              <span className="mt-2 w-1 h-1 bg-muted-foreground/30 block shrink-0" />
-              {h}
-            </li>
-          ))}
-        </ul>
-        <div className="flex flex-wrap gap-2">
-          {project.tags.map((tag) => (
-            <span
-              key={tag}
-              className="font-mono text-[10px] tracking-widest uppercase px-2 py-1 border border-border text-muted-foreground"
-            >
-              {tag}
+    <Reveal delay={index * 0.05}>
+      <article className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-cyan-200 hover:shadow-xl hover:shadow-slate-200/80">
+        <ScreenshotFrame
+          src={project.screenshot}
+          alt={`Screenshot ${project.title}`}
+          onOpen={() => onOpenScreenshot(project)}
+        />
+        <div className="p-6 md:p-7">
+          <div className="mb-5 flex items-center justify-between gap-4">
+            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-500">
+              {project.id}
             </span>
-          ))}
+            <span className="text-sm font-medium text-slate-500">{displayText(project.year)}</span>
+          </div>
+          <h3 className="text-2xl font-semibold tracking-tight text-slate-950">{project.title}</h3>
+          <p className="mt-3 text-sm leading-7 text-slate-600">{displayText(project.description)}</p>
+          <ul className="mt-6 space-y-3">
+            {project.highlights.map((highlight) => (
+              <li key={highlight} className="flex gap-3 text-sm leading-6 text-slate-700">
+                <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-700" />
+                <span>{displayText(highlight)}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-6">
+            <TagList tags={project.tags} />
+          </div>
         </div>
-      </div>
-    </article>
+      </article>
+    </Reveal>
   );
 }
 
-function MiniProjectCard({ project }: { project: (typeof MINI_PROJECTS)[0] }) {
+function MiniProjectCard({ project, index }: { project: MiniProject; index: number }) {
   return (
-    <article className="border border-border group hover:bg-card transition-colors duration-200">
-      <div className="p-6">
-        <div className="flex items-start justify-between mb-3">
-          <span className="font-mono text-xs text-muted-foreground/30">{project.id}</span>
+    <Reveal delay={index * 0.04}>
+      <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-cyan-200 hover:shadow-lg">
+        <div className="mb-5 flex items-center justify-between">
+          <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-500">
+            {project.id}
+          </span>
           <a
             href={project.github}
             target="_blank"
             rel="noreferrer"
-            className="text-muted-foreground hover:text-foreground transition-colors"
-            onClick={(e) => e.stopPropagation()}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition hover:border-cyan-700 hover:text-cyan-800"
+            aria-label={`Buka GitHub ${project.title}`}
           >
-            <Github size={14} />
+            <Github size={17} />
           </a>
         </div>
-        <h3 className="font-sans text-base font-semibold text-foreground mb-2">{project.title}</h3>
-        <p className="text-sm text-muted-foreground leading-relaxed mb-5">{project.description}</p>
-        <div className="flex flex-wrap gap-2">
-          {project.tags.map((tag) => (
-            <span
-              key={tag}
-              className="font-mono text-[10px] tracking-widest uppercase px-2 py-1 border border-border text-muted-foreground"
-            >
-              {tag}
-            </span>
-          ))}
+        <h3 className="text-lg font-semibold tracking-tight text-slate-950">{project.title}</h3>
+        <p className="mt-3 flex-1 text-sm leading-7 text-slate-600">{displayText(project.description)}</p>
+        <div className="mt-6">
+          <TagList tags={project.tags} />
         </div>
         <a
           href={project.github}
           target="_blank"
           rel="noreferrer"
-          className="mt-6 inline-flex items-center gap-2 font-mono text-xs tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors"
+          className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-slate-700 transition hover:text-cyan-800"
         >
-          <Github size={14} />
-          View GitHub
-          <ArrowUpRight size={12} />
+          Lihat repository
+          <ArrowUpRight size={15} />
         </a>
-      </div>
-    </article>
+      </article>
+    </Reveal>
   );
 }
 
 function Work() {
-  const [activeScreenshot, setActiveScreenshot] = useState<{ src: string; title: string } | null>(
-    null
-  );
+  const [activeLightbox, setActiveLightbox] = useState<LightboxItem>(null);
 
-  const openScreenshot = (project: (typeof MAIN_PROJECTS)[0]) => {
+  const openScreenshot = (project: MainProject) => {
     if (!project.screenshot) return;
-    setActiveScreenshot({ src: project.screenshot, title: project.title });
+    setActiveLightbox({ src: project.screenshot, title: project.title, type: "screenshot" });
   };
 
   return (
-    <>
-    <section id="work" className="py-32 px-6 max-w-6xl mx-auto">
-      {/* Main Projects */}
-      <div className="flex items-baseline justify-between mb-16 border-b border-border pb-6">
-        <div>
-          <h2 className="font-sans text-4xl font-black tracking-tighter">Proyek Pilihan</h2>
-          <p className="font-mono text-xs text-muted-foreground mt-2 tracking-widest uppercase">
-            Government Projects — Diskominfo Kota Malang
-          </p>
+    <section id="work" className="bg-slate-50 py-20 md:py-28">
+      <div className="mx-auto max-w-7xl px-5 md:px-8">
+        <SectionHeader
+          eyebrow="Proyek"
+          title="Bukti kerja nyata di sistem pemerintahan dan aplikasi data."
+          description="Project utama menampilkan pengalaman membangun sistem yang dipakai untuk integrasi data, pelaporan, visualisasi, dan proses operasional lintas instansi."
+          meta={`${MAIN_PROJECTS.length} Proyek utama`}
+          icon={BriefcaseBusiness}
+        />
+
+        <div className="grid gap-6 lg:grid-cols-2">
+          {MAIN_PROJECTS.map((project, index) => (
+            <MainProjectCard
+              key={project.id}
+              project={project}
+              index={index}
+              onOpenScreenshot={openScreenshot}
+            />
+          ))}
         </div>
-        <span className="font-mono text-xs text-muted-foreground tracking-widest uppercase">
-          {MAIN_PROJECTS.length} Proyek
-        </span>
-      </div>
 
-      <div className="grid md:grid-cols-2 gap-px bg-border mb-24">
-        {MAIN_PROJECTS.map((p) => (
-          <div key={p.id} className="bg-background">
-            <MainProjectCard project={p} onOpenScreenshot={openScreenshot} />
-          </div>
-        ))}
-      </div>
-
-      {/* Mini Projects */}
-      <div className="flex items-baseline justify-between mb-16 border-b border-border pb-6">
-        <div>
-          <h2 className="font-sans text-4xl font-black tracking-tighter">Mini Proyek</h2>
-          <p className="font-mono text-xs text-muted-foreground mt-2 tracking-widest uppercase">
-            Pribadi
-          </p>
+        <div className="mt-20 md:mt-28">
+          <SectionHeader
+            eyebrow="Eksplorasi teknis"
+            title="Mini project untuk memperluas praktik lintas stack."
+            description="Kumpulan project pribadi yang memperlihatkan eksplorasi mobile, API, otomasi gambar, dan integrasi AI tanpa mengaburkan fokus utama sebagai developer sistem web."
+            meta={`${MINI_PROJECTS.length} Repository`}
+            icon={Code2}
+          />
         </div>
-        <span className="font-mono text-xs text-muted-foreground tracking-widest uppercase">
-          {MINI_PROJECTS.length} Proyek
-        </span>
-      </div>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border">
-        {MINI_PROJECTS.map((p) => (
-          <div key={p.id} className="bg-background">
-            <MiniProjectCard project={p} />
-          </div>
-        ))}
+        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          {MINI_PROJECTS.map((project, index) => (
+            <MiniProjectCard key={project.id} project={project} index={index} />
+          ))}
+        </div>
       </div>
+      <MediaLightbox item={activeLightbox} onClose={() => setActiveLightbox(null)} />
     </section>
-    <ScreenshotLightbox screenshot={activeScreenshot} onClose={() => setActiveScreenshot(null)} />
-    </>
   );
 }
 
 function Skills() {
   return (
-    <section id="skills" className="py-32 px-6 max-w-6xl mx-auto">
-      <div className="flex items-baseline justify-between mb-16 border-b border-border pb-6">
-        <h2 className="font-sans text-4xl font-black tracking-tighter">Keahlian</h2>
-        <Terminal size={16} className="text-muted-foreground" />
-      </div>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border">
-        {SKILLS.map((group) => (
-          <div key={group.group} className="bg-background p-8">
-            <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-muted-foreground mb-6">
-              {group.group}
-            </p>
-            <ul className="space-y-3">
-              {group.items.map((item) => (
-                <li key={item} className="flex items-center gap-3">
-                  <span className="w-1 h-1 bg-muted-foreground/40 block shrink-0" />
-                  <span className="font-mono text-sm text-foreground">{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+    <section id="skills" className="bg-white py-20 md:py-28">
+      <div className="mx-auto max-w-7xl px-5 md:px-8">
+        <SectionHeader
+          eyebrow="Keahlian"
+          title="Stack yang relevan untuk membangun, merawat, dan mengembangkan produk web."
+          description="Keahlian disusun berdasarkan area kerja agar recruiter dapat cepat membaca kecocokan teknis: backend, frontend, database, dan tools operasional."
+          icon={Terminal}
+        />
+
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {SKILLS.map((group, index) => (
+            <Reveal key={group.group} delay={index * 0.05}>
+              <div className="h-full rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <p className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-800">
+                  {group.group}
+                </p>
+                <ul className="space-y-3">
+                  {group.items.map((item) => (
+                    <li key={item} className="flex items-center gap-3 text-sm font-medium text-slate-700">
+                      <span className="h-2 w-2 rounded-full bg-slate-300" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   );
 }
 
 function Certifications() {
-  const [activeCertificate, setActiveCertificate] = useState<{ src: string; name: string } | null>(
-    null
-  );
+  const [activeLightbox, setActiveLightbox] = useState<LightboxItem>(null);
 
-  const openCertificate = (cert: (typeof CERTIFICATIONS)[0]) => {
-    setActiveCertificate({ src: cert.certificate, name: cert.name });
+  const openCertificate = (cert: Certification) => {
+    setActiveLightbox({ src: cert.certificate, title: displayText(cert.name), type: "certificate" });
   };
 
   return (
-    <>
-    <section id="certifications" className="py-32 px-6 max-w-6xl mx-auto">
-      <div className="flex items-baseline justify-between mb-16 border-b border-border pb-6">
-        <h2 className="font-sans text-4xl font-black tracking-tighter">Sertifikasi</h2>
-        <Award size={16} className="text-muted-foreground" />
+    <section id="certifications" className="bg-slate-50 py-20 md:py-28">
+      <div className="mx-auto max-w-7xl px-5 md:px-8">
+        <SectionHeader
+          eyebrow="Sertifikasi"
+          title="Validasi tambahan untuk kompetensi teknis dan tata kelola."
+          description="Sertifikasi menjadi penguat kredibilitas: mulai dari SQL, manajemen proyek, keamanan informasi, web dasar, networking, sampai big data analytics."
+          meta={`${CERTIFICATIONS.length} Dokumen`}
+          icon={Award}
+        />
+
+        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+          {CERTIFICATIONS.map((cert, index) => (
+            <Reveal key={cert.name} delay={index * 0.035}>
+              <button
+                onClick={() => openCertificate(cert)}
+                className="group flex w-full items-center justify-between gap-5 border-b border-slate-200 px-5 py-5 text-left transition last:border-b-0 hover:bg-slate-50 md:px-7"
+              >
+                <span className="flex min-w-0 items-center gap-4 md:gap-6">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold text-slate-500">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-sm font-semibold leading-6 text-slate-950 md:text-base">
+                      {displayText(cert.name)}
+                    </span>
+                    <span className="mt-1 block text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
+                      Lihat sertifikat
+                    </span>
+                  </span>
+                </span>
+                <span className="flex shrink-0 items-center gap-3 text-sm font-semibold text-slate-500">
+                  {cert.year}
+                  <ArrowUpRight
+                    size={16}
+                    className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-cyan-800"
+                  />
+                </span>
+              </button>
+            </Reveal>
+          ))}
+        </div>
       </div>
-      <div className="grid gap-px bg-border">
-        {CERTIFICATIONS.map((cert, i) => (
-          <button
-            key={cert.name}
-            onClick={() => openCertificate(cert)}
-            className="bg-background flex items-center justify-between px-8 py-6 hover:bg-card transition-colors duration-200 cursor-pointer text-left"
-          >
-            <div className="flex items-center gap-8">
-              <span className="font-mono text-xs text-muted-foreground/30 w-6 shrink-0">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <span className="font-sans font-medium text-foreground">{cert.name}</span>
-            </div>
-            <span className="font-mono text-xs text-muted-foreground/50 shrink-0">{cert.year}</span>
-          </button>
-        ))}
-      </div>
+      <MediaLightbox item={activeLightbox} onClose={() => setActiveLightbox(null)} />
     </section>
-    <CertificateLightbox certificate={activeCertificate} onClose={() => setActiveCertificate(null)} />
-    </>
+  );
+}
+
+function MediaLightbox({ item, onClose }: { item: LightboxItem; onClose: () => void }) {
+  useEffect(() => {
+    if (!item) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [item, onClose]);
+
+  return (
+    <AnimatePresence>
+      {item ? (
+        <motion.div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/85 p-4 backdrop-blur-md md:p-8"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${item.type === "certificate" ? "Sertifikat" : "Screenshot"} ${item.title}`}
+          onClick={onClose}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.22 }}
+        >
+          <button
+            type="button"
+            onClick={onClose}
+            className="absolute right-4 top-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white text-slate-700 shadow-lg transition hover:bg-slate-100 md:right-8 md:top-8"
+            aria-label="Tutup preview"
+          >
+            <X size={20} />
+          </button>
+
+          <motion.div
+            className="max-h-full w-full max-w-6xl"
+            initial={{ opacity: 0, y: 16, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 12, scale: 0.98 }}
+            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="mb-3 flex items-center justify-between gap-4 text-white">
+              <p className="truncate text-sm font-semibold md:text-base">{item.title}</p>
+              <span className="hidden text-xs font-semibold uppercase tracking-[0.18em] text-slate-300 sm:block">
+                Tekan Esc untuk menutup
+              </span>
+            </div>
+            {item.src.toLowerCase().endsWith(".pdf") ? (
+              <iframe
+                src={item.src}
+                title={item.title}
+                className="h-[80vh] w-full rounded-2xl border border-white/15 bg-white"
+              />
+            ) : (
+              <img
+                src={item.src}
+                alt={item.title}
+                className="mx-auto max-h-[82vh] max-w-full rounded-2xl border border-white/15 bg-white object-contain shadow-2xl"
+              />
+            )}
+          </motion.div>
+        </motion.div>
+      ) : null}
+    </AnimatePresence>
   );
 }
 
 function Contact() {
   return (
-    <section id="contact" className="py-32 px-6 max-w-6xl mx-auto border-t border-border">
-      <div className="text-center max-w-2xl mx-auto">
-        <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-muted-foreground mb-6">
-          Kontak
-        </p>
-        <h2 className="font-sans text-5xl font-black tracking-tighter mb-6">
-          {"Let's work"}
-          <br />
-          <span className="text-muted-foreground">together.</span>
+    <section id="contact" className="bg-slate-950 py-20 text-white md:py-28">
+      <Reveal className="mx-auto max-w-4xl px-5 text-center md:px-8">
+        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">Kontak</p>
+        <h2 className="mt-5 text-4xl font-semibold tracking-tight md:text-6xl">
+          Tertarik berdiskusi tentang role atau project berikutnya?
         </h2>
-        <p className="text-muted-foreground mb-12">
-          {/* Open to full-time roles, freelance projects, and technical collaborations. */}
+        <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-slate-300 md:text-lg">
+          Saya terbuka untuk peluang full-time, kolaborasi teknis, dan pekerjaan yang membutuhkan
+          developer web dengan pengalaman membangun sistem operasional berbasis data.
         </p>
-        <a
-          href="mailto:darfianardiansyah@gmail.com"
-          className="inline-flex items-center gap-3 border border-foreground px-10 py-4 font-mono text-sm tracking-widest uppercase hover:bg-foreground hover:text-background transition-all duration-200 group"
-        >
-          <Mail size={14} />
-          darfianardiansyah@gmail.com
-          <ArrowUpRight
-            size={14}
-            className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
-          />
-        </a>
-        <div className="flex justify-center mt-12">
+        <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <a
-            href="tel:085954551591"
-            className="font-mono text-xs tracking-wider text-muted-foreground hover:text-foreground transition-colors"
+            href="mailto:darfianardiansyah@gmail.com"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-100 sm:w-auto"
           >
-            {/* +62 859-5455-1591 */}
+            <Mail size={17} />
+            darfianardiansyah@gmail.com
+            <ArrowUpRight size={16} />
+          </a>
+          <a
+            href="https://github.com/darfianardiansyah"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white transition hover:border-cyan-300 hover:text-cyan-200 sm:w-auto"
+          >
+            <Github size={17} />
+            GitHub
           </a>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }
 
 function Footer() {
   return (
-    <footer className="border-t border-border px-6 py-8 max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-      <span className="font-mono text-xs text-muted-foreground">
-        © 2026 Darfian Ardiansyah. All rights reserved.
-      </span>
-      <span className="font-mono text-xs text-muted-foreground/40">Fullstack Web Developer</span>
+    <footer className="border-t border-slate-200 bg-white px-5 py-8 md:px-8">
+      <div className="mx-auto flex max-w-7xl flex-col gap-3 text-sm text-slate-500 md:flex-row md:items-center md:justify-between">
+        <span>© 2026 Darfian Ardiansyah. All rights reserved.</span>
+        <span>Fullstack Web Developer - Laravel, REST API, Database</span>
+      </div>
     </footer>
   );
 }
 
 export default function App() {
   return (
-    <div
-      className="bg-background text-foreground min-h-screen"
-      style={{ fontFamily: "'Inter', sans-serif" }}
-    >
+    <div className="min-h-screen bg-white text-slate-950 antialiased" style={{ fontFamily: "'Inter', sans-serif" }}>
       <NavBar />
       <main>
         <Hero />
