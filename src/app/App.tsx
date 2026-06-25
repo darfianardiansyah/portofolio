@@ -57,9 +57,9 @@ const smoothReveal: Transition = { duration: 0.56, ease: [0.22, 1, 0.36, 1] };
 
 const HERO_COPY = {
   eyebrow: "Terbuka untuk peluang kerja",
-  title: "Fullstack Developer untuk Sistem Web Produksi",
+  title: "Fullstack Developer",
   description:
-    "Membangun dan merawat aplikasi web yang stabil, mudah dikembangkan, dan membantu tim bekerja lebih cepat dengan data yang lebih rapi.",
+    "Membangun dan merawat aplikasi web yang stabil serta mudah dikembangkan, dengan fokus pada arsitektur data yang terstruktur dan performa sistem yang optimal.",
   primaryCta: "Lihat Proyek",
   secondaryCta: "Hubungi Saya",
 };
