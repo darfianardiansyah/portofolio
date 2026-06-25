@@ -137,7 +137,7 @@ function SectionHeader({
 }) {
   return (
     <Reveal className="mb-10 border-b border-slate-200 pb-7 md:mb-14 md:flex md:items-end md:justify-between md:gap-10">
-      <div className="max-w-2xl">
+      <div className="flex-1 max-w-4xl">
         <div className="mb-4 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500">
           {Icon ? <Icon size={15} className="text-cyan-700" /> : null}
           {eyebrow}
@@ -145,10 +145,12 @@ function SectionHeader({
         <h2 className="text-3xl font-semibold tracking-tight text-slate-950 md:text-5xl">
           {title}
         </h2>
-        <p className="mt-4 text-base leading-7 text-slate-600 md:text-lg">{description}</p>
+        <p className="mt-4 max-w-3xl text-base leading-7 text-slate-600 md:text-lg">
+          {description}
+        </p>
       </div>
       {meta ? (
-        <span className="mt-6 inline-flex rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 md:mt-0">
+        <span className="mt-6 inline-flex shrink-0 rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 md:mt-1">
           {meta}
         </span>
       ) : null}
@@ -765,7 +767,7 @@ function Footer() {
     <footer className="border-t border-slate-200 bg-white px-5 py-8 md:px-8">
       <div className="mx-auto flex max-w-7xl flex-col gap-3 text-sm text-slate-500 md:flex-row md:items-center md:justify-between">
         <span>© 2026 Darfian Ardiansyah. All rights reserved.</span>
-        <span>Fullstack Web Developer - Laravel, REST API, Database</span>
+        <span>Fullstack Web Developer</span>
       </div>
     </footer>
   );
