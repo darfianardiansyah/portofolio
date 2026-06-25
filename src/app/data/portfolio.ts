@@ -17,8 +17,8 @@ export const MAIN_PROJECTS = [
       "Sinkronisasi data sektoral real-time",
     ],
     tags: ["Laravel", "MySQL", "Bootstrap", "REST API", "jQuery", "DataTables"],
-    year: "2021–Sekarang",
-    screenshot: "/screenshots/satu-data-kota-malang.png",
+    year: "2021-Sekarang",
+    screenshots: ["/screenshots/satu-data-kota-malang-landing.png","/screenshots/satu-data-kota-malang.png","/screenshots/satu-data-kota-malang-klhk.png"],
   },
   {
     id: "02",
@@ -32,7 +32,7 @@ export const MAIN_PROJECTS = [
     ],
     tags: ["Laravel", "Bootstrap", "MySQL"],
     year: "2022",
-    screenshot: "/screenshots/podes-kota-malang.png",
+    screenshots: ["/screenshots/podes-kota-malang.png"],
   },
   {
     id: "03",
@@ -46,7 +46,7 @@ export const MAIN_PROJECTS = [
     ],
     tags: ["Laravel", "MySQL", "Bootstrap", "Chart.js", "Google Maps API", "DataTables"],
     year: "2023",
-    screenshot: "/screenshots/pendataan-kesejahteraan-sosial.png",
+    screenshots: ["/screenshots/pendataan-kesejahteraan-sosial.png"],
   },
   {
     id: "04",
@@ -60,7 +60,7 @@ export const MAIN_PROJECTS = [
     ],
     tags: ["Laravel", "MySQL", "Bootstrap", "Chart.js", "DataTables"],
     year: "2023",
-    screenshot: "/screenshots/sitangkas.png",
+    screenshots: ["/screenshots/sitangkas.png"],
   },
 ];
 

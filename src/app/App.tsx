@@ -5,6 +5,8 @@ import {
   Award,
   BriefcaseBusiness,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Code2,
   Github,
   ImagePlus,
@@ -24,7 +26,12 @@ import {
   type MiniProject,
 } from "./data/portfolio";
 
-type LightboxItem = { src: string; title: string; type: "screenshot" | "certificate" } | null;
+type LightboxItem = {
+  sources: string[];
+  title: string;
+  type: "screenshot" | "certificate";
+  initialIndex?: number;
+} | null;
 
 const reveal = {
   hidden: { opacity: 0, y: 24 },
@@ -78,6 +85,18 @@ function useScrollY() {
 
 function scrollToSection(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function getProjectScreenshots(project: MainProject): string[] {
+  if ("screenshots" in project && Array.isArray(project.screenshots)) {
+    return project.screenshots.filter(Boolean);
+  }
+
+  if ("screenshot" in project && typeof project.screenshot === "string") {
+    return [project.screenshot];
+  }
+
+  return [];
 }
 
 function Reveal({
@@ -279,31 +298,38 @@ function Hero() {
 }
 
 function ScreenshotFrame({
-  src,
+  sources,
   alt,
   onOpen,
 }: {
-  src: string | null;
+  sources: string[];
   alt: string;
   onOpen?: () => void;
 }) {
-  if (src) {
+  const previewSrc = sources[0] ?? null;
+
+  if (previewSrc) {
     return (
       <button
         type="button"
         onClick={onOpen}
         className="group/image relative block aspect-video w-full overflow-hidden bg-slate-100 text-left"
-        aria-label={`Buka ${alt}`}
+        aria-label={`Buka galeri ${alt}`}
       >
         <img
-          src={src}
+          src={previewSrc}
           alt={alt}
           className="h-full w-full object-cover object-top transition duration-500 group-hover/image:scale-[1.03]"
           loading="lazy"
         />
+        {sources.length > 1 ? (
+          <span className="absolute right-4 top-4 rounded-full bg-white/92 px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm backdrop-blur">
+            {sources.length} gambar
+          </span>
+        ) : null}
         <span className="absolute inset-x-4 bottom-4 inline-flex w-fit items-center gap-2 rounded-full bg-white/92 px-3 py-2 text-xs font-semibold text-slate-800 opacity-0 shadow-sm backdrop-blur transition group-hover/image:opacity-100">
           Preview screenshot
-          <ArrowUpRight size={14} />
+          <ArrowUpRight size={14} aria-hidden="true" />
         </span>
       </button>
     );
@@ -341,11 +367,13 @@ function MainProjectCard({
   index: number;
   onOpenScreenshot: (project: MainProject) => void;
 }) {
+  const screenshots = getProjectScreenshots(project);
+
   return (
     <Reveal delay={index * 0.05}>
       <article className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-cyan-200 hover:shadow-xl hover:shadow-slate-200/80">
         <ScreenshotFrame
-          src={project.screenshot}
+          sources={screenshots}
           alt={`Screenshot ${project.title}`}
           onOpen={() => onOpenScreenshot(project)}
         />
@@ -416,8 +444,16 @@ function Work() {
   const [activeLightbox, setActiveLightbox] = useState<LightboxItem>(null);
 
   const openScreenshot = (project: MainProject) => {
-    if (!project.screenshot) return;
-    setActiveLightbox({ src: project.screenshot, title: project.title, type: "screenshot" });
+    const screenshots = getProjectScreenshots(project);
+
+    if (!screenshots.length) return;
+
+    setActiveLightbox({
+      sources: screenshots,
+      title: project.title,
+      type: "screenshot",
+      initialIndex: 0,
+    });
   };
 
   return (
@@ -502,7 +538,7 @@ function Certifications() {
   const [activeLightbox, setActiveLightbox] = useState<LightboxItem>(null);
 
   const openCertificate = (cert: Certification) => {
-    setActiveLightbox({ src: cert.certificate, title: cert.name, type: "certificate" });
+    setActiveLightbox({ sources: [cert.certificate], title: cert.name, type: "certificate" });
   };
 
   return (
@@ -554,11 +590,37 @@ function Certifications() {
 }
 
 function MediaLightbox({ item, onClose }: { item: LightboxItem; onClose: () => void }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeSrc = item?.sources[activeIndex] ?? "";
+  const hasMultipleSources = Boolean(item && item.sources.length > 1);
+
   useEffect(() => {
     if (!item) return;
 
+    setActiveIndex(item.initialIndex ?? 0);
+  }, [item]);
+
+  useEffect(() => {
+    if (!item) return;
+
+    const showPrevious = () => {
+      setActiveIndex((current) => (current === 0 ? item.sources.length - 1 : current - 1));
+    };
+
+    const showNext = () => {
+      setActiveIndex((current) => (current === item.sources.length - 1 ? 0 : current + 1));
+    };
+
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") {
+        onClose();
+        return;
+      }
+
+      if (!hasMultipleSources) return;
+
+      if (event.key === "ArrowLeft") showPrevious();
+      if (event.key === "ArrowRight") showNext();
     };
 
     document.body.style.overflow = "hidden";
@@ -568,7 +630,7 @@ function MediaLightbox({ item, onClose }: { item: LightboxItem; onClose: () => v
       document.body.style.overflow = "";
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [item, onClose]);
+  }, [hasMultipleSources, item, onClose]);
 
   return (
     <AnimatePresence>
@@ -603,23 +665,58 @@ function MediaLightbox({ item, onClose }: { item: LightboxItem; onClose: () => v
           >
             <div className="mb-3 flex items-center justify-between gap-4 text-white">
               <p className="truncate text-sm font-semibold md:text-base">{item.title}</p>
-              <span className="hidden text-xs font-semibold uppercase tracking-[0.18em] text-slate-300 sm:block">
-                Tekan Esc untuk menutup
-              </span>
+              <div className="hidden items-center gap-4 text-xs font-semibold uppercase tracking-[0.18em] text-slate-300 sm:flex">
+                {hasMultipleSources ? (
+                  <span>
+                    {activeIndex + 1} / {item.sources.length}
+                  </span>
+                ) : null}
+                <span>Tekan Esc untuk menutup</span>
+              </div>
             </div>
-            {item.src.toLowerCase().endsWith(".pdf") ? (
-              <iframe
-                src={item.src}
-                title={item.title}
-                className="h-[80vh] w-full rounded-2xl border border-white/15 bg-white"
-              />
-            ) : (
-              <img
-                src={item.src}
-                alt={item.title}
-                className="mx-auto max-h-[82vh] max-w-full rounded-2xl border border-white/15 bg-white object-contain shadow-2xl"
-              />
-            )}
+            <div className="relative">
+              {hasMultipleSources ? (
+                <>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setActiveIndex((current) =>
+                        current === 0 ? item.sources.length - 1 : current - 1,
+                      )
+                    }
+                    className="absolute left-3 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white text-slate-700 shadow-lg transition hover:bg-slate-100"
+                    aria-label="Tampilkan gambar sebelumnya"
+                  >
+                    <ChevronLeft size={20} aria-hidden="true" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setActiveIndex((current) =>
+                        current === item.sources.length - 1 ? 0 : current + 1,
+                      )
+                    }
+                    className="absolute right-3 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white text-slate-700 shadow-lg transition hover:bg-slate-100"
+                    aria-label="Tampilkan gambar berikutnya"
+                  >
+                    <ChevronRight size={20} aria-hidden="true" />
+                  </button>
+                </>
+              ) : null}
+              {activeSrc.toLowerCase().endsWith(".pdf") ? (
+                <iframe
+                  src={activeSrc}
+                  title={item.title}
+                  className="h-[80vh] w-full rounded-2xl border border-white/15 bg-white"
+                />
+              ) : (
+                <img
+                  src={activeSrc}
+                  alt={`${item.title} ${hasMultipleSources ? `gambar ${activeIndex + 1}` : ""}`.trim()}
+                  className="mx-auto max-h-[82vh] max-w-full rounded-2xl border border-white/15 bg-white object-contain shadow-2xl"
+                />
+              )}
+            </div>
           </motion.div>
         </motion.div>
       ) : null}
