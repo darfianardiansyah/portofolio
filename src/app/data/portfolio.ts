@@ -105,9 +105,9 @@ export const MINI_PROJECTS = [
 
 export const SKILLS = [
   { group: "Backend", items: ["Laravel", "PHP", "REST API", "Node.js"] },
-  { group: "Frontend", items: ["HTML", "CSS", "JavaScript", "Bootstrap", "Flutter"] },
+  { group: "Frontend", items: ["HTML", "CSS", "JavaScript", "Bootstrap", "Flutter", "React", "Tailwind CSS"] },
   { group: "Database", items: ["MySQL", "MariaDB", "PostgreSQL", "SQL Server"] },
-  { group: "Tools", items: ["Git", "Linux Server", "Nginx", "Apache", "Postman"] },
+  { group: "Tools", items: ["Git", "Linux Server", "Nginx", "Apache", "Postman", "Termius"] },
 ];
 
 export const CERTIFICATIONS = [
