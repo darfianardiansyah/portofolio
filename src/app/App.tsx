@@ -13,150 +13,23 @@ import {
   Terminal,
   X,
 } from "lucide-react";
+import {
+  CERTIFICATIONS,
+  MAIN_PROJECTS,
+  MINI_PROJECTS,
+  NAV_LINKS,
+  SKILLS,
+  type Certification,
+  type MainProject,
+  type MiniProject,
+} from "./data/portfolio";
 
-const NAV_LINKS = [
-  { label: "Proyek", id: "work" },
-  { label: "Keahlian", id: "skills" },
-  { label: "Sertifikasi", id: "certifications" },
-  { label: "Kontak", id: "contact" },
-];
-
-const MAIN_PROJECTS = [
-  {
-    id: "01",
-    title: "Satu Data Kota Malang",
-    description:
-      "Mengintegrasikan data sektoral dengan API KLHK, BPS, dan SIPD Kemendagri. Membangun dashboard analitik untuk sinkronisasi data lintas instansi pemerintah Kota Malang.",
-    highlights: [
-      "Integrasi API KLHK, BPS, dan SIPD Kemendagri",
-      "Dashboard analitik lintas instansi",
-      "Sinkronisasi data sektoral real-time",
-    ],
-    tags: ["Laravel", "MySQL", "Bootstrap", "REST API", "jQuery", "DataTables"],
-    year: "2021–Sekarang",
-    screenshot: "/screenshots/satu-data-kota-malang.png",
-  },
-  {
-    id: "02",
-    title: "PODES Kota Malang",
-    description:
-      "Aplikasi untuk pendataan potensi desa/kelurahan yang mempercepat proses pelaporan data potensi wilayah kepada pemerintah kota.",
-    highlights: [
-      "Pendataan potensi desa & kelurahan",
-      "Percepatan proses pelaporan data",
-      "Antarmuka sederhana untuk petugas lapangan",
-    ],
-    tags: ["Laravel", "Bootstrap", "MySQL"],
-    year: "2022",
-    screenshot: "/screenshots/podes-kota-malang.png",
-  },
-  {
-    id: "03",
-    title: "Pendataan Kesejahteraan Sosial",
-    description:
-      "Sistem klasifikasi kemiskinan dengan 4 kategori, dilengkapi visualisasi heatmap dan titik rumah untuk validasi lapangan. Hasil kolaborasi dengan Dinsos, Bappeda, dan Kominfo.",
-    highlights: [
-      "Klasifikasi kemiskinan 4 kategori",
-      "Heatmap & titik rumah via Google Maps",
-      "Kolaborasi 3 dinas pemerintah",
-    ],
-    tags: ["Laravel", "MySQL", "Bootstrap", "Chart.js", "Google Maps API", "DataTables"],
-    year: "2023",
-    screenshot: "/screenshots/pendataan-kesejahteraan-sosial.png",
-  },
-  {
-    id: "04",
-    title: "SITANGKAS",
-    description:
-      "Pendamping SIPD untuk pencairan anggaran pemerintah kota. Mendukung proses pencairan dengan Tanda Tangan Elektronik (TTE) dan sistem paperless end-to-end.",
-    highlights: [
-      "Integrasi Tanda Tangan Elektronik (TTE)",
-      "Sistem paperless untuk pencairan anggaran",
-      "Pendamping resmi SIPD Kemendagri",
-    ],
-    tags: ["Laravel", "MySQL", "Bootstrap", "Chart.js", "DataTables"],
-    year: "2023",
-    screenshot: "/screenshots/sitangkas.png",
-  },
-];
-
-const MINI_PROJECTS = [
-  {
-    id: "M1",
-    title: "Pencatat Keuangan Pribadi",
-    description:
-      "Aplikasi pencatat pemasukan dan pengeluaran pribadi berbasis Laravel API dan Flutter mobile.",
-    tags: ["Laravel", "Flutter", "Dart", "REST API"],
-    github: "https://github.com/darfianardiansyah/flutter-laravel-keuangan",
-    screenshot: null,
-  },
-  {
-    id: "M2",
-    title: "Laravel Laundry App",
-    description:
-      "Aplikasi manajemen laundry berbasis web dengan Livewire — input transaksi, pelanggan, layanan, dan status pencucian secara realtime.",
-    tags: ["Laravel", "Livewire", "MySQL"],
-    github: "https://github.com/darfianardiansyah/laravel-laundry",
-    screenshot: null,
-  },
-  {
-    id: "M3",
-    title: "Health Buddy — AI Health Assistant",
-    description:
-      "Chatbot kesehatan berbasis Google Gemini API untuk konsultasi kesehatan dasar, nutrisi, olahraga, dan informasi kesehatan umum.",
-    tags: ["Node.js", "Gemini API", "AI", "Chatbot"],
-    github: "https://github.com/darfianardiansyah/gemini-ai-api-trial",
-    screenshot: null,
-  },
-  {
-    id: "M4",
-    title: "Image Compress Converter",
-    description:
-      "Konversi gambar JPG/PNG ke WebP atau AVIF dengan pengaturan kualitas, resize otomatis, dan info penghematan ukuran file.",
-    tags: ["Laravel", "PHP", "WebP", "AVIF"],
-    github: "https://github.com/darfianardiansyah/laravel-image-compressor",
-    screenshot: null,
-  },
-];
-
-const SKILLS = [
-  { group: "Backend", items: ["Laravel", "PHP", "REST API", "Node.js"] },
-  { group: "Frontend", items: ["HTML", "CSS", "JavaScript", "Bootstrap", "Flutter"] },
-  { group: "Database", items: ["MySQL", "MariaDB", "PostgreSQL", "SQL Server"] },
-  { group: "Tools", items: ["Git", "Linux Server", "Nginx", "Apache", "Postman"] },
-];
-
-const CERTIFICATIONS = [
-  { name: "HackerRank — SQL (Advanced)", year: "2025", certificate: "/certificates/hackerrank-sql.png" },
-  { name: "Dicoding — Dasar Manajemen Proyek", year: "2024", certificate: "/certificates/dicoding-manajemen-proyek.png" },
-  { name: "Training Awareness ISO/IEC 27001:2022 Information Security Management System", year: "2023", certificate: "/certificates/iso-iec-27001.png" },
-  { name: "Dicoding — Dasar Pemrograman Web", year: "2020", certificate: "/certificates/dicoding-pemrograman-web.png" },
-  { name: "Cisco — Introduction to Networks", year: "2020", certificate: "/certificates/cisco-networks.png" },
-  { name: "Digital Talent Scholarship — Big Data Analytics", year: "2019", certificate: "/certificates/digital-talent-big-data.png" },
-];
-
-type MainProject = (typeof MAIN_PROJECTS)[0];
-type MiniProject = (typeof MINI_PROJECTS)[0];
-type Certification = (typeof CERTIFICATIONS)[0];
 type LightboxItem = { src: string; title: string; type: "screenshot" | "certificate" } | null;
 
 const reveal = {
   hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0 },
 };
-
-const textFixes: Record<string, string> = {
-  "â€“": "-",
-  "â€”": "-",
-  "Â©": "©",
-};
-
-function displayText(value: string) {
-  return Object.entries(textFixes).reduce(
-    (text, [broken, fixed]) => text.replaceAll(broken, fixed),
-    value
-  );
-}
 
 function useScrollY() {
   const [y, setY] = useState(0);
@@ -298,12 +171,10 @@ function Hero() {
             Open to Opportunities
           </div>
           <h1 className="max-w-4xl text-5xl font-semibold leading-[1.02] tracking-tight text-slate-950 sm:text-6xl lg:text-7xl">
-            Fullstack Developer untuk sistem web yang rapi, terukur, dan siap digunakan.
+            Fullstack Developer
           </h1>
           <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-600">
-            Saya Darfian Ardiansyah, programmer dengan pengalaman 5+ tahun membangun aplikasi
-            layanan publik, integrasi REST API, dashboard data, dan sistem operasional untuk
-            kebutuhan lintas instansi.
+            Membangun sistem web yang stabil, scalable, dan siap dipakai di lingkungan produksi.
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
@@ -357,13 +228,6 @@ function Hero() {
               alt="Preview halaman portofolio"
               className="aspect-[4/3] w-full object-cover object-top opacity-95"
             />
-          </div>
-          <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-5">
-            <p className="text-sm font-semibold text-slate-950">Fokus profesional</p>
-            <p className="mt-2 text-sm leading-6 text-slate-600">
-              Backend Laravel, desain database, integrasi API, dan dashboard yang membantu tim
-              mengambil keputusan dari data operasional.
-            </p>
           </div>
         </motion.div>
       </div>
@@ -454,15 +318,15 @@ function MainProjectCard({
             <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-500">
               {project.id}
             </span>
-            <span className="text-sm font-medium text-slate-500">{displayText(project.year)}</span>
+            <span className="text-sm font-medium text-slate-500">{project.year}</span>
           </div>
           <h3 className="text-2xl font-semibold tracking-tight text-slate-950">{project.title}</h3>
-          <p className="mt-3 text-sm leading-7 text-slate-600">{displayText(project.description)}</p>
+          <p className="mt-3 text-sm leading-7 text-slate-600">{project.description}</p>
           <ul className="mt-6 space-y-3">
             {project.highlights.map((highlight) => (
               <li key={highlight} className="flex gap-3 text-sm leading-6 text-slate-700">
                 <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-700" />
-                <span>{displayText(highlight)}</span>
+                <span>{highlight}</span>
               </li>
             ))}
           </ul>
@@ -494,7 +358,7 @@ function MiniProjectCard({ project, index }: { project: MiniProject; index: numb
           </a>
         </div>
         <h3 className="text-lg font-semibold tracking-tight text-slate-950">{project.title}</h3>
-        <p className="mt-3 flex-1 text-sm leading-7 text-slate-600">{displayText(project.description)}</p>
+        <p className="mt-3 flex-1 text-sm leading-7 text-slate-600">{project.description}</p>
         <div className="mt-6">
           <TagList tags={project.tags} />
         </div>
@@ -546,7 +410,7 @@ function Work() {
           <SectionHeader
             eyebrow="Eksplorasi teknis"
             title="Mini project untuk memperluas praktik lintas stack."
-            description="Kumpulan project pribadi yang memperlihatkan eksplorasi mobile, API, otomasi gambar, dan integrasi AI tanpa mengaburkan fokus utama sebagai developer sistem web."
+            description="Kumpulan project pribadi untuk eksperimen teknis & pembelajaran mandiri"
             meta={`${MINI_PROJECTS.length} Repository`}
             icon={Code2}
           />
@@ -602,7 +466,7 @@ function Certifications() {
   const [activeLightbox, setActiveLightbox] = useState<LightboxItem>(null);
 
   const openCertificate = (cert: Certification) => {
-    setActiveLightbox({ src: cert.certificate, title: displayText(cert.name), type: "certificate" });
+    setActiveLightbox({ src: cert.certificate, title: cert.name, type: "certificate" });
   };
 
   return (
@@ -629,7 +493,7 @@ function Certifications() {
                   </span>
                   <span className="min-w-0">
                     <span className="block text-sm font-semibold leading-6 text-slate-950 md:text-base">
-                      {displayText(cert.name)}
+                      {cert.name}
                     </span>
                     <span className="mt-1 block text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
                       Lihat sertifikat
