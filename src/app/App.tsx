@@ -64,6 +64,8 @@ const HERO_COPY = {
   secondaryCta: "Hubungi Saya",
 };
 
+const HERO_PROFILE_IMAGE = "/profile/me.png";
+
 const HERO_STATS = [
   ["5+ Tahun", "Pengalaman"],
   [`${MAIN_PROJECTS.length}+`, "Proyek produksi"],
@@ -213,7 +215,7 @@ function NavBar() {
 function Hero() {
   return (
     <section className="relative overflow-hidden bg-white pt-28" aria-labelledby="hero-title">
-      <div className="mx-auto flex min-h-[calc(100vh-7rem)] max-w-7xl items-center px-5 pb-16 md:px-8">
+      <div className="mx-auto grid min-h-[calc(100vh-7rem)] max-w-7xl items-center gap-12 px-5 pb-16 md:px-8 lg:grid-cols-[minmax(0,1fr)_minmax(340px,0.72fr)]">
         <motion.div
           variants={heroStagger}
           initial="hidden"
@@ -285,6 +287,30 @@ function Hero() {
               </div>
             ))}
           </motion.dl>
+        </motion.div>
+        <motion.div
+          variants={heroItem}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          transition={{ ...smoothReveal, delay: 0.18 }}
+          className="relative mx-auto w-full max-w-sm self-end sm:max-w-md lg:max-w-none"
+          aria-label="Foto Darfian Ardiansyah"
+        >
+          <div className="absolute inset-x-8 bottom-4 top-20 -z-10 rounded-[2rem] bg-cyan-100/55 blur-3xl" />
+          <div className="relative overflow-hidden rounded-b-[2rem]">
+            <img
+              src={HERO_PROFILE_IMAGE}
+              alt="Darfian Ardiansyah"
+              className="mx-auto h-[440px] w-full object-contain object-bottom sm:h-[520px] lg:h-[620px]"
+              style={{
+                WebkitMaskImage:
+                  "linear-gradient(to bottom, #000 0%, #000 76%, rgba(0,0,0,0.7) 88%, transparent 100%)",
+                maskImage:
+                  "linear-gradient(to bottom, #000 0%, #000 76%, rgba(0,0,0,0.7) 88%, transparent 100%)",
+              }}
+            />
+          </div>
         </motion.div>
       </div>
       <button
