@@ -29,6 +29,7 @@ import {
 type LightboxItem = {
   sources: string[];
   title: string;
+  titles?: string[];
   type: "screenshot" | "certificate";
   initialIndex?: number;
 } | null;
@@ -166,11 +167,10 @@ function NavBar() {
 
   return (
     <header
-      className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
-        scrolled
+      className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${scrolled
           ? "border-b border-slate-200 bg-white/90 shadow-sm backdrop-blur-xl"
           : "bg-white/70 backdrop-blur-md"
-      }`}
+        }`}
     >
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 md:px-8">
         <button
@@ -565,8 +565,14 @@ function Skills() {
 function Certifications() {
   const [activeLightbox, setActiveLightbox] = useState<LightboxItem>(null);
 
-  const openCertificate = (cert: Certification) => {
-    setActiveLightbox({ sources: [cert.certificate], title: cert.name, type: "certificate" });
+  const openCertificate = (cert: Certification, index: number) => {
+    setActiveLightbox({
+      sources: CERTIFICATIONS.map((item) => item.certificate),
+      title: cert.name,
+      titles: CERTIFICATIONS.map((item) => item.name),
+      type: "certificate",
+      initialIndex: index,
+    });
   };
 
   return (
@@ -584,7 +590,7 @@ function Certifications() {
           {CERTIFICATIONS.map((cert, index) => (
             <Reveal key={cert.name} delay={index * 0.035}>
               <button
-                onClick={() => openCertificate(cert)}
+                onClick={() => openCertificate(cert, index)}
                 className="group flex w-full items-center justify-between gap-5 border-b border-slate-200 px-5 py-5 text-left transition last:border-b-0 hover:bg-slate-50 md:px-7"
               >
                 <span className="flex min-w-0 items-center gap-4 md:gap-6">
@@ -620,6 +626,7 @@ function Certifications() {
 function MediaLightbox({ item, onClose }: { item: LightboxItem; onClose: () => void }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeSrc = item?.sources[activeIndex] ?? "";
+  const activeTitle = item?.titles?.[activeIndex] ?? item?.title ?? "";
   const hasMultipleSources = Boolean(item && item.sources.length > 1);
 
   useEffect(() => {
@@ -667,7 +674,7 @@ function MediaLightbox({ item, onClose }: { item: LightboxItem; onClose: () => v
           className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/85 p-4 backdrop-blur-md md:p-8"
           role="dialog"
           aria-modal="true"
-          aria-label={`${item.type === "certificate" ? "Sertifikat" : "Screenshot"} ${item.title}`}
+          aria-label={`${item.type === "certificate" ? "Sertifikat" : "Screenshot"} ${activeTitle}`}
           onClick={onClose}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -692,7 +699,7 @@ function MediaLightbox({ item, onClose }: { item: LightboxItem; onClose: () => v
             onClick={(event) => event.stopPropagation()}
           >
             <div className="mb-3 flex items-center justify-between gap-4 text-white">
-              <p className="truncate text-sm font-semibold md:text-base">{item.title}</p>
+              <p className="truncate text-sm font-semibold md:text-base">{activeTitle}</p>
               <div className="hidden items-center gap-4 text-xs font-semibold uppercase tracking-[0.18em] text-slate-300 sm:flex">
                 {hasMultipleSources ? (
                   <span>
@@ -734,13 +741,13 @@ function MediaLightbox({ item, onClose }: { item: LightboxItem; onClose: () => v
               {activeSrc.toLowerCase().endsWith(".pdf") ? (
                 <iframe
                   src={activeSrc}
-                  title={item.title}
+                  title={activeTitle}
                   className="h-[80vh] w-full rounded-2xl border border-white/15 bg-white"
                 />
               ) : (
                 <img
                   src={activeSrc}
-                  alt={`${item.title} ${hasMultipleSources ? `gambar ${activeIndex + 1}` : ""}`.trim()}
+                  alt={`${activeTitle} ${hasMultipleSources ? `gambar ${activeIndex + 1}` : ""}`.trim()}
                   className="mx-auto max-h-[82vh] max-w-full rounded-2xl border border-white/15 bg-white object-contain shadow-2xl"
                 />
               )}
@@ -793,7 +800,6 @@ function Footer() {
     <footer className="border-t border-slate-200 bg-white px-5 py-8 md:px-8">
       <div className="mx-auto flex max-w-7xl flex-col gap-3 text-sm text-slate-500 md:flex-row md:items-center md:justify-between">
         <span>© 2026 Darfian Ardiansyah. All rights reserved.</span>
-        <span>Fullstack Web Developer</span>
       </div>
     </footer>
   );
