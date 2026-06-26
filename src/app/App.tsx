@@ -798,7 +798,7 @@ function Contact() {
 function Footer() {
   return (
     <footer className="border-t border-slate-200 bg-white px-5 py-8 md:px-8">
-      <div className="mx-auto flex max-w-7xl flex-col gap-3 text-sm text-slate-500 md:flex-row md:items-center md:justify-between">
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-3 text-center text-sm text-slate-500">
         <span>© 2026 Darfian Ardiansyah. All rights reserved.</span>
       </div>
     </footer>
