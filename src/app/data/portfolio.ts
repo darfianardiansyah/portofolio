@@ -10,13 +10,13 @@ export const MAIN_PROJECTS = [
     id: "01",
     title: "Satu Data Kota Malang",
     description:
-      "Mengintegrasikan data sektoral dengan API KLHK, BPS, dan SIPD Kemendagri. Membangun analitik data untuk data lintas instansi pemerintah Kota Malang.",
+      "Mengintegrasikan data API KLHK, BPS, dan SIPD Kemendagri. Membangun analitik data lintas instansi pemerintah Kota Malang.",
     highlights: [
       "Integrasi API KLHK, BPS, dan SIPD Kemendagri",
       "Dashboard analitik lintas instansi",
       "Sinkronisasi data sektoral real-time",
     ],
-    tags: ["Laravel", "MySQL", "Bootstrap", "REST API", "jQuery", "DataTables"],
+    tags: ["Laravel", "MySQL", "Bootstrap", "REST API"],
     year: "2021-Sekarang",
     screenshots: ["/screenshots/satu-data-kota-malang-landing.png", "/screenshots/satu-data-kota-malang.png", "/screenshots/satu-data-kota-malang-klhk.png"],
   },
@@ -44,7 +44,7 @@ export const MAIN_PROJECTS = [
       "Heatmap & titik rumah via Google Maps",
       "Kolaborasi 3 dinas pemerintah",
     ],
-    tags: ["Laravel", "MySQL", "Bootstrap", "Chart.js", "Google Maps API", "DataTables"],
+    tags: ["Laravel", "MySQL", "Bootstrap", "Chart.js", "Google Maps API"],
     year: "2023",
     screenshots: ["/screenshots/pendataan-kesejahteraan-sosial.png"],
   },
@@ -111,12 +111,12 @@ export const SKILLS = [
 ];
 
 export const CERTIFICATIONS = [
-  { name: "HackerRank — SQL (Advanced)", year: "2025", certificate: "/certificates/hackerrank-sql.png" },
-  { name: "Dicoding — Dasar Manajemen Proyek", year: "2024", certificate: "/certificates/dicoding-manajemen-proyek.png" },
-  { name: "Training Awareness ISO/IEC 27001:2022 Information Security Management System", year: "2023", certificate: "/certificates/iso-iec-27001.png" },
-  { name: "Dicoding — Dasar Pemrograman Web", year: "2020", certificate: "/certificates/dicoding-pemrograman-web.png" },
-  { name: "Cisco — Introduction to Networks", year: "2020", certificate: "/certificates/cisco-networks.png" },
-  { name: "Digital Talent Scholarship — Big Data Analytics", year: "2019", certificate: "/certificates/digital-talent-big-data.png" },
+  { name: "HackerRank - SQL (Advanced)", year: "2025", certificate: "/certificates/hackerrank-sql.png" },
+  { name: "Dicoding - Dasar Manajemen Proyek", year: "2024", certificate: "/certificates/dicoding-manajemen-proyek.png" },
+  { name: "Mitra Berdaya Optima - Training Awareness ISO/IEC 27001:2022 Information Security Management System", year: "2023", certificate: "/certificates/iso-iec-27001.png" },
+  { name: "Dicoding - Dasar Pemrograman Web", year: "2020", certificate: "/certificates/dicoding-pemrograman-web.png" },
+  { name: "Cisco - Introduction to Networks", year: "2020", certificate: "/certificates/cisco-networks.png" },
+  { name: "Digital Talent Scholarship - Big Data Analytics", year: "2019", certificate: "/certificates/digital-talent-big-data.png" },
 ];
 
 export type MainProject = (typeof MAIN_PROJECTS)[number];
