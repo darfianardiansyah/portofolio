@@ -66,7 +66,7 @@ const HERO_COPY = {
   secondaryCta: "Hubungi Saya",
 };
 
-const HERO_PROFILE_IMAGE = "/profile/me.png";
+const HERO_PROFILE_IMAGE = "/profile/mee.png";
 
 const HERO_STATS = [
   ["5+ Tahun", "Pengalaman"],
