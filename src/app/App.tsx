@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Analytics } from "@vercel/analytics/next";
 import { AnimatePresence, motion, type Transition } from "motion/react";
 import {
   ArrowUpRight,
@@ -815,6 +816,7 @@ export default function App() {
         <Skills />
         <Certifications />
         <Contact />
+        <Analytics />
       </main>
       <Footer />
     </div>
