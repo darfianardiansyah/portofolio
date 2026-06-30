@@ -10,7 +10,7 @@ export const MAIN_PROJECTS = [
     id: "01",
     title: "Satu Data Kota Malang",
     description:
-      "Mengintegrasikan data sektoral dengan API KLHK, BPS, dan SIPD Kemendagri. Membangun dashboard analitik untuk sinkronisasi data lintas instansi pemerintah Kota Malang.",
+      "Mengintegrasikan data sektoral dengan API KLHK, BPS, dan SIPD Kemendagri. Membangun analitik data untuk data lintas instansi pemerintah Kota Malang.",
     highlights: [
       "Integrasi API KLHK, BPS, dan SIPD Kemendagri",
       "Dashboard analitik lintas instansi",
@@ -18,7 +18,7 @@ export const MAIN_PROJECTS = [
     ],
     tags: ["Laravel", "MySQL", "Bootstrap", "REST API", "jQuery", "DataTables"],
     year: "2021-Sekarang",
-    screenshots: ["/screenshots/satu-data-kota-malang-landing.png","/screenshots/satu-data-kota-malang.png","/screenshots/satu-data-kota-malang-klhk.png"],
+    screenshots: ["/screenshots/satu-data-kota-malang-landing.png", "/screenshots/satu-data-kota-malang.png", "/screenshots/satu-data-kota-malang-klhk.png"],
   },
   {
     id: "02",
@@ -56,7 +56,7 @@ export const MAIN_PROJECTS = [
     highlights: [
       "Integrasi Tanda Tangan Elektronik (TTE)",
       "Sistem paperless untuk pencairan anggaran",
-      "Pendamping resmi SIPD Kemendagri",
+      "Didukung data resmi SIPD Kemendagri",
     ],
     tags: ["Laravel", "MySQL", "Bootstrap", "Chart.js", "DataTables"],
     year: "2023",
