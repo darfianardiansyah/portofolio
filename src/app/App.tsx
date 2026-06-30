@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Analytics } from "@vercel/analytics/next";
+import { Analytics } from "@vercel/analytics/react";
 import { AnimatePresence, motion, type Transition } from "motion/react";
 import {
   ArrowUpRight,
