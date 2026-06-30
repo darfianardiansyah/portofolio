@@ -168,8 +168,8 @@ function NavBar() {
   return (
     <header
       className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${scrolled
-          ? "border-b border-slate-200 bg-white/90 shadow-sm backdrop-blur-xl"
-          : "bg-white/70 backdrop-blur-md"
+        ? "border-b border-slate-200 bg-white/90 shadow-sm backdrop-blur-xl"
+        : "bg-white/70 backdrop-blur-md"
         }`}
     >
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 md:px-8">
