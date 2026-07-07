@@ -111,6 +111,7 @@ export const SKILLS = [
 ];
 
 export const CERTIFICATIONS = [
+  { name: "Dinas Komunikasi dan Informatika Prov. Jatim — Pelatihan Penetration Testing (PENTEST)", year: "2026", certificate: "/certificates/kominfo-jatim-pentest.png" },
   { name: "HackerRank — SQL (Advanced)", year: "2025", certificate: "/certificates/hackerrank-sql.png" },
   { name: "Dicoding — Dasar Manajemen Proyek", year: "2024", certificate: "/certificates/dicoding-manajemen-proyek.png" },
   { name: "Training Awareness ISO/IEC 27001:2022 Information Security Management System", year: "2023", certificate: "/certificates/iso-iec-27001.png" },
