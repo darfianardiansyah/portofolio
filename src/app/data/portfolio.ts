@@ -17,7 +17,7 @@ export const MAIN_PROJECTS = [
       "Sinkronisasi data sektoral real-time",
     ],
     tags: ["Laravel", "MySQL", "Bootstrap", "REST API"],
-    year: "2021-Sekarang",
+    year: "2021-2026",
     screenshots: ["/screenshots/satu-data-kota-malang-landing.png", "/screenshots/satu-data-kota-malang.png", "/screenshots/satu-data-kota-malang-klhk.png"],
   },
   {
