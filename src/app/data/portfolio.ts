@@ -67,6 +67,15 @@ export const MAIN_PROJECTS = [
 export const MINI_PROJECTS = [
   {
     id: "M1",
+    title: "Slash Paste — Chrome Extension",
+    description:
+      "Ekstensi browser (Manifest V3) untuk otomatisasi pengetikan (text expansion) dengan floating autocomplete dropdown, isolated Shadow DOM, dan dashboard snippet CRUD.",
+    tags: ["Chrome Extension", "JavaScript", "Manifest V3", "Shadow DOM"],
+    github: "https://github.com/darfianardiansyah/ex-slash",
+    screenshot: null,
+  },
+  {
+    id: "M2",
     title: "Pencatat Keuangan Pribadi",
     description:
       "Aplikasi pencatat pemasukan dan pengeluaran pribadi berbasis Laravel API dan Flutter mobile.",
@@ -75,7 +84,7 @@ export const MINI_PROJECTS = [
     screenshot: null,
   },
   {
-    id: "M2",
+    id: "M3",
     title: "Laravel Laundry App",
     description:
       "Aplikasi manajemen laundry berbasis web dengan Livewire — input transaksi, pelanggan, layanan, dan status pencucian secara realtime.",
@@ -84,7 +93,7 @@ export const MINI_PROJECTS = [
     screenshot: null,
   },
   {
-    id: "M3",
+    id: "M4",
     title: "Health Buddy — AI Health Assistant",
     description:
       "Chatbot kesehatan berbasis Google Gemini API untuk konsultasi kesehatan dasar, nutrisi, olahraga, dan informasi kesehatan umum.",
@@ -93,7 +102,7 @@ export const MINI_PROJECTS = [
     screenshot: null,
   },
   {
-    id: "M4",
+    id: "M5",
     title: "Image Compress Converter",
     description:
       "Konversi gambar JPG/PNG ke WebP atau AVIF dengan pengaturan kualitas, resize otomatis, dan info penghematan ukuran file.",
