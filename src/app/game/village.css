@@ -1,0 +1,153 @@
+.village-page { position: relative; height: 100dvh; min-height: 360px; overflow: hidden; background: #ece6d0; color: #294236; font-family: 'Inter', sans-serif; isolation: isolate; }
+.village-canvas { display: block; width: 100%; height: 100%; outline: none; touch-action: none; }
+.village-canvas:focus-visible { outline: 3px solid #537f79; outline-offset: -4px; }
+.village-page button, .village-page a, .village-panel button, .village-panel a, .village-media button { -webkit-tap-highlight-color: transparent; }
+.village-page button, .village-panel button, .village-media button { cursor: pointer; }
+.village-page button:disabled { cursor: default; opacity: .45; }
+.village-page :is(button,a):focus-visible, .village-panel :is(button,a):focus-visible, .village-media button:focus-visible { outline: 3px solid #537f79; outline-offset: 4px; }
+.village-topbar { position: absolute; z-index: 30; top: max(22px, env(safe-area-inset-top)); left: max(28px, env(safe-area-inset-left)); right: max(28px, env(safe-area-inset-right)); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 20px; pointer-events: none; }
+.village-topbar > * { pointer-events: auto; }
+.village-back, .village-menu-button { display: inline-flex; align-items: center; gap: 10px; width: fit-content; border: 1px solid #d1c8af; border-radius: 12px; padding: 12px 16px; background: #fffaedee; box-shadow: 0 3px 0 #a99b7617; font-size: 12px; font-weight: 600; text-decoration: none; color: #294236; }
+.village-menu-button { justify-self: end; }
+.village-back:hover, .village-menu-button:hover { background: #fffdf4; }
+.village-brand { display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700; letter-spacing: .15em; }
+.village-brand-dot { height: 6px; width: 6px; background: #8a9d57; border-radius: 50%; }
+.village-intro { position: absolute; pointer-events: none; top: 100px; left: max(28px, env(safe-area-inset-left)); z-index: 10; max-width: 270px; padding: 20px; border: 1px solid #d1c8af; border-radius: 15px; background: #fff9e9eb; }
+.village-eyebrow { display: block; color: #6b7758; font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; line-height: 1.6; }
+.village-intro h1 { margin: 13px 0 16px; font-family: Georgia, serif; font-size: clamp(32px, 2.8vw, 42px); font-weight: 400; line-height: 1.06; letter-spacing: -.035em; }
+.village-intro p { font-size: 12px; line-height: 1.8; color: #65715a; }
+.village-season { display: inline-flex; align-items: center; gap: 8px; font-size: 10px; margin-top: 18px; border-top: 1px solid #b9bd9833; padding-top: 12px; }
+.village-season > span { width: 6px; height: 6px; border-radius: 50%; background: #819552; }
+.village-location-menu { position: absolute; z-index: 40; right: max(28px, env(safe-area-inset-right)); top: max(80px, calc(env(safe-area-inset-top) + 65px)); width: 310px; max-width: calc(100% - 28px); max-height: calc(100dvh - 105px); overflow: auto; background: #fff9eb; border: 1px solid #d1c8af; border-radius: 17px; padding: 19px 16px; box-shadow: 0 15px 60px #38422926; }
+.village-location-menu > .village-eyebrow { margin: 0 8px 10px; }
+.village-location-menu button { display: flex; gap: 12px; align-items: center; width: 100%; padding: 13px 8px; text-align: left; border-radius: 9px; }
+.village-location-menu button:hover { background: #eee9d7; }
+.village-location-menu button > span:nth-child(2) { flex: 1; }
+.village-location-menu strong, .village-near strong { display: block; font-size: 12px; font-weight: 600; }
+.village-location-menu small, .village-near small { display: block; margin-top: 4px; font-size: 10px; color: #77806b; }
+.village-location-number { display: grid; place-items: center; width: 34px; height: 34px; flex-shrink: 0; border-radius: 9px; color: #fff9e8; font-size: 11px; font-weight: 600; }
+.village-bottom { position: absolute; z-index: 20; bottom: max(27px, env(safe-area-inset-bottom)); left: max(28px, env(safe-area-inset-left)); right: max(28px, env(safe-area-inset-right)); display: flex; align-items: end; justify-content: space-between; gap: 16px; pointer-events: none; }
+.village-controls { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border: 1px solid #d1c8af; border-radius: 13px; background: #fffaedee; }
+.village-controls strong { display: block; font-size: 11px; font-weight: 600; }
+.village-controls p { font-size: 10px; margin-top: 6px; color: #727b65; }
+.village-controls kbd { font-family: inherit; font-size: 9px; font-weight: 600; }
+.village-near { pointer-events: auto; }
+.village-near > span { font-size: 10px; color: #647057; background: #fff9e7b8; padding: 10px 13px; border-radius: 8px; }
+.village-near button { display: flex; align-items: center; text-align: left; gap: 12px; background: #fffaed; border: 1px solid #d1c8af; padding: 12px 16px; border-radius: 13px; min-width: 245px; box-shadow: 0 5px 20px #39472715; }
+.village-near button > span:nth-child(2) { flex: 1; }
+.village-loading, .village-error { position: absolute; z-index: 15; left: 50%; top: 50%; transform: translate(-50%, -50%); background: #fff9ecf5; border: 1px solid #d1c8af; padding: 28px; border-radius: 18px; text-align: center; box-shadow: 0 10px 60px #38422926; }
+.village-loading svg { margin: 0 auto 14px; }
+.village-loading p { font-size: 13px; }
+.village-error { width: min(480px, calc(100% - 32px)); }
+.village-error h2 { font-family: Georgia, serif; font-size: 29px; margin-bottom: 12px; }
+.village-error p { font-size: 13px; line-height: 1.8; }
+.village-error > div { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 15px; margin-top: 22px; }
+.village-button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 16px; border-radius: 10px; background: #365d4b; color: #fff9ec; font-size: 12px; text-decoration: none; overflow-wrap: anywhere; }
+.village-button:hover { background: #284b3b; }
+.village-inline-link { display: inline-flex; align-items: center; gap: 6px; color: #365d4b; font-weight: 600; font-size: 12px; text-decoration: none; }
+.village-inline-link:hover { text-decoration: underline; }
+.village-touch { display: none; }
+.village-overlay { position: fixed; inset: 0; background: #24352be0; backdrop-filter: blur(5px); z-index: 60; }
+.village-panel { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 61; width: min(860px, calc(100% - 40px)); max-height: min(86dvh, 900px); display: flex; flex-direction: column; border-radius: 22px; background: #fff9ed; border: 1px solid #e2d9c1; color: #294236; font-family: 'Inter', sans-serif; box-shadow: 0 24px 100px #111f2550; outline: none; }
+.village-panel-header { display: flex; align-items: start; justify-content: space-between; gap: 16px; padding: 24px 28px 22px; border-bottom: 1px solid #e5ddc9; flex-shrink: 0; }
+.village-panel-header h2 { font-family: Georgia, serif; font-weight: 400; letter-spacing: -.025em; font-size: 32px; margin: 7px 0; line-height: 1.15; }
+.village-panel-header p { font-size: 12px; color: #77806b; }
+.village-icon-button { display: grid; place-items: center; flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%; border: 1px solid #ded5bf; background: #fffbed; color: #365d4b; }
+.village-icon-button:hover { background: #eae3d0; }
+.village-panel-body { padding: 26px 28px 32px; overflow-y: auto; overscroll-behavior: contain; }
+.village-panel-body p { font-size: 13px; line-height: 1.85; color: #66715e; }
+.village-panel-body h3 { font-size: 16px; font-weight: 600; line-height: 1.5; }
+.village-profile { display: flex; align-items: center; gap: 22px; margin-bottom: 26px; }
+.village-profile img { width: 96px; height: 110px; object-fit: cover; object-position: top; border-radius: 12px; background: #eae3d0; }
+.village-profile h3 { font-size: 25px; margin: 8px 0 4px; }
+.village-stats { display: grid; grid-template-columns: repeat(3, 1fr); margin: 26px 0; border: 1px solid #e5ddc9; border-radius: 14px; background: #f3edda; }
+.village-stats > div { padding: 18px; }
+.village-stats strong { display: block; font-family: Georgia, serif; font-size: 28px; font-weight: 400; }
+.village-stats span { display: block; font-size: 10px; color: #77806b; margin-top: 6px; }
+.village-note { padding: 17px; background: #edf0dd; border-radius: 12px; }
+.village-section-title { margin: 26px 0 13px; }
+.village-card { background: #fffdf6; border: 1px solid #e5ddc9; padding: 22px; border-radius: 14px; margin-top: 14px; }
+.village-card p { margin-top: 10px; }
+.village-card-heading { display: flex; align-items: start; justify-content: space-between; gap: 16px; }
+.village-card-heading > span { white-space: nowrap; color: #77806b; font-size: 11px; padding-top: 4px; }
+.village-card ul { list-style: disc; padding-left: 18px; color: #66715e; font-size: 12px; line-height: 1.8; margin: 12px 0; }
+.village-tags { display: flex; flex-wrap: wrap; gap: 7px; margin: 15px 0; }
+.village-tags span { border: 1px solid #dedec7; padding: 5px 9px; border-radius: 6px; font-size: 10px; color: #4d6951; background: #f1f2e4; }
+.village-gallery { display: flex; flex-wrap: wrap; gap: 12px; }
+.village-gallery button { width: min(200px, 100%); border: 1px solid #e5ddc9; border-radius: 9px; overflow: hidden; text-align: left; }
+.village-gallery img { width: 100%; height: 115px; object-fit: cover; object-position: top; background: #eee9d9; }
+.village-gallery span, .village-certificate span { display: block; font-size: 10px; padding: 9px 11px; background: #f3edda; color: #4d6951; }
+.village-skill-grid, .village-certificate-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.village-skill-grid .village-card, .village-certificate-grid .village-card { margin: 0; }
+.village-skill-grid { margin-top: 20px; }
+.village-certificate-grid { margin-top: 20px; }
+.village-certificate-grid h3 { font-size: 13px; margin-top: 15px; }
+.village-certificate { width: 100%; text-align: left; border-radius: 9px; overflow: hidden; border: 1px solid #e5ddc9; }
+.village-certificate img { width: 100%; height: 150px; object-fit: contain; background: #eee9d9; }
+.village-letter { padding: 14px 0; }
+.village-letter h3 { font-family: Georgia, serif; font-size: 36px; font-weight: 400; margin: 15px 0; }
+.village-letter p { margin-bottom: 26px; }
+.village-letter .village-inline-link { display: flex; width: fit-content; margin-top: 20px; }
+.village-media-overlay { z-index: 70; background: #17251eef; }
+.village-media { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 71; width: min(1100px, calc(100% - 32px)); max-height: 94dvh; overflow: auto; padding: 22px; border-radius: 16px; background: #fff9ed; color: #294236; font-family: 'Inter', sans-serif; outline: none; }
+.village-media-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+.village-media-header h2 { font-size: 15px; font-weight: 600; line-height: 1.6; }
+.village-media-header p { font-size: 11px; color: #77806b; }
+.village-media > img { display: block; max-width: 100%; max-height: 70dvh; object-fit: contain; margin: auto; border-radius: 6px; }
+.village-media > p { padding: 28px; }
+.village-media-nav { display: flex; gap: 20px; justify-content: center; align-items: center; margin-top: 15px; font-size: 12px; }
+@media (pointer: coarse), (max-width: 850px) {
+  .village-touch { position: absolute; z-index: 25; bottom: max(22px, env(safe-area-inset-bottom)); left: max(22px, env(safe-area-inset-left)); right: max(22px, env(safe-area-inset-right)); display: flex; align-items: end; justify-content: space-between; pointer-events: none; }
+  .village-dpad { display: grid; grid-template-columns: repeat(3, 44px); grid-template-rows: repeat(2, 44px); gap: 5px; pointer-events: auto; }
+  .village-direction { display: grid; place-items: center; border: 1px solid #c4bca2; border-radius: 12px; background: #fff9e9ee; color: #365d4b; box-shadow: 0 3px 0 #a99b7633; touch-action: none; user-select: none; }
+  .village-direction:active { background: #dfebcb; transform: translateY(2px); }
+  .village-direction-up { grid-column: 2; grid-row: 1; }
+  .village-direction-left { grid-column: 1; grid-row: 2; }
+  .village-direction-down { grid-column: 2; grid-row: 2; }
+  .village-direction-right { grid-column: 3; grid-row: 2; }
+  .village-touch-interact { pointer-events: auto; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 70px; height: 70px; border-radius: 50%; border: 1px solid #c4bca2; background: #fff9e9ee; color: #365d4b; font-size: 22px; font-weight: 600; touch-action: manipulation; }
+  .village-touch-interact span { font-size: 9px; font-weight: 500; margin-top: 4px; }
+  .village-bottom { bottom: max(130px, calc(env(safe-area-inset-bottom) + 108px)); justify-content: center; }
+  .village-controls { display: none; }
+  .village-near button { min-width: 240px; padding: 9px 12px; }
+  .village-intro { top: 90px; left: 23px; }
+  .village-intro h1 { font-size: 34px; }
+  .village-season { display: none; }
+}
+@media (max-width: 600px) {
+  .village-topbar { top: max(16px, env(safe-area-inset-top)); left: 16px; right: 16px; grid-template-columns: 1fr auto; gap: 10px; }
+  .village-brand { position: absolute; top: 61px; left: 0; font-size: 10px; gap: 7px; }
+  .village-brand svg { width: 16px; }
+  .village-back, .village-menu-button { font-size: 10px; padding: 11px 12px; gap: 7px; }
+  .village-intro { top: 107px; left: 16px; padding: 12px; max-width: 175px; }
+  .village-intro .village-eyebrow { font-size: 8px; max-width: 150px; }
+  .village-intro h1 { font-size: 26px; margin: 8px 0 0; }
+  .village-intro p { display: none; }
+  .village-location-menu { top: 73px; right: 16px; }
+  .village-panel { width: calc(100% - 24px); max-height: calc(100dvh - max(28px, env(safe-area-inset-top)) - max(28px, env(safe-area-inset-bottom))); border-radius: 17px; }
+  .village-panel-header { padding: 20px 18px; }
+  .village-panel-header h2 { font-size: 26px; }
+  .village-panel-body { padding: 20px 18px 26px; }
+  .village-profile { gap: 15px; }
+  .village-profile img { width: 72px; height: 90px; }
+  .village-profile h3 { font-size: 20px; }
+  .village-stats > div { padding: 13px 9px; }
+  .village-stats strong { font-size: 24px; }
+  .village-skill-grid, .village-certificate-grid { grid-template-columns: 1fr; }
+  .village-card { padding: 17px; }
+  .village-card-heading { flex-wrap: wrap; gap: 2px; }
+  .village-gallery button { width: 100%; }
+  .village-gallery img { height: 150px; }
+  .village-media { padding: 15px; }
+}
+@media (max-height: 500px) and (min-width: 601px) {
+  .village-intro { top: 88px; }
+  .village-intro h1 { font-size: 28px; }
+  .village-intro p, .village-season { display: none; }
+  .village-brand { font-size: 10px; }
+  .village-bottom { left: auto; right: 24px; bottom: 110px; }
+  .village-near > span { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .village-page *, .village-panel *, .village-media * { animation: none !important; transition: none !important; }
+}
