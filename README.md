@@ -1,13 +1,18 @@
+# Portofolio Programmer
 
-  # Portfolio for Programmer
+Portofolio Darfian Ardiansyah, Fullstack Developer. Situs ini menampilkan profil, proyek, keahlian, sertifikasi, dan informasi kontak.
 
-  ## Preview
+## Preview
 
-  ![Portfolio preview](./public/screenshots/portfolio-home.png)
+![Preview portofolio](./public/screenshots/portfolio-home.png)
 
-  ## Running the code
+## Instalasi awal
 
-  Run `npm i` to install the dependencies.
+Pastikan Node.js dan npm sudah terpasang, lalu jalankan:
 
-  Run `npm run dev` to start the development server.
-  
+```sh
+npm install
+npm run dev
+```
+
+Buka alamat lokal yang ditampilkan Vite di terminal.

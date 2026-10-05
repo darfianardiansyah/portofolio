@@ -5,6 +5,9 @@ node_modules/
 dist/
 build/
 
+# Internal documentation
+docs/
+
 # Local environment files
 .env
 .env.*
