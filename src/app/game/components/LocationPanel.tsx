@@ -34,7 +34,7 @@ export default function LocationPanel({ location, onClose, restoreFocus }: Props
             <div className="village-profile"><img src={PROFILE.photo} alt={PROFILE.name} /><div><span className="village-eyebrow">Selamat datang di rumah saya</span><h3>{PROFILE.name}</h3><p>{PROFILE.hero.title}</p></div></div>
             <p>{PROFILE.hero.description}</p>
             <div className="village-stats"><div><strong>{PROFILE.experience}</strong><span>Pengalaman</span></div><div><strong>{MAIN_PROJECTS.length}</strong><span>Proyek utama</span></div><div><strong>{CERTIFICATIONS.length}</strong><span>Sertifikasi</span></div></div>
-            <p className="village-note">{PROFILE.hero.eyebrow}. Jelajahi desa untuk melihat karya, teknologi, dan perjalanan belajar saya.</p>
+            <p className="village-note">{PROFILE.hero.eyebrow}. Jelajahi taman untuk melihat karya, teknologi, dan perjalanan belajar saya.</p>
           </>}
           {location?.id === "projects" && <>
             <p>Beberapa sistem yang saya bangun dan rawat, serta eksperimen pribadi.</p>

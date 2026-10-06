@@ -26,7 +26,7 @@ export default function GamePage() {
   }, []);
   const onEngine = useCallback((next: GameEngine | null) => { engine.current = next; if (next) setReady(true); }, []);
   const onError = useCallback((message: string) => { setError(message); setReady(false); engine.current?.setPaused(true); }, []);
-  useEffect(() => { window.scrollTo(0, 0); const title = document.title; document.title = "Desa Darfian — Portofolio"; return () => { document.title = title; }; }, []);
+  useEffect(() => { window.scrollTo(0, 0); const title = document.title; document.title = "Taman Darfian — Portofolio"; return () => { document.title = title; }; }, []);
   useEffect(() => { engine.current?.setPaused(Boolean(location) || menu || Boolean(error)); }, [location, menu, error, ready]);
   useEffect(() => {
     if (!menu) return;
@@ -47,13 +47,13 @@ export default function GamePage() {
     <GameCanvas key={attempt} onEngine={onEngine} onLocation={setNear} onInteract={openLocation} onError={onError} />
     <header className="village-topbar">
       <Link to="/" className="village-back"><ArrowLeft size={16} /><span>Kembali ke Portofolio</span></Link>
-      <div className="village-brand"><Sprout size={20} /><span>DESA DARFIAN</span><span className="village-brand-dot" /></div>
+      <div className="village-brand"><Sprout size={20} /><span>TAMAN DARFIAN</span><span className="village-brand-dot" /></div>
       <button ref={menuButton} className="village-menu-button" aria-expanded={menu} aria-controls="village-locations" onClick={() => setMenu((value) => !value)}><Map size={17} />Daftar Lokasi</button>
     </header>
-    <section className="village-intro" aria-label="Selamat datang"><span className="village-eyebrow">Sebuah tempat untuk mengenal saya</span><h1>Langkah kecil,<br />cerita besar.</h1><p>Jelajahi desa. Temukan karya,<br />keahlian, dan perjalanan saya.</p><span className="village-season"><span />Musim bertumbuh</span></section>
+    <section className="village-intro" aria-label="Selamat datang"><span className="village-eyebrow">Sebuah tempat untuk mengenal saya</span><h1>Langkah kecil,<br />cerita besar.</h1><p>Jelajahi taman. Temukan karya,<br />keahlian, dan perjalanan saya.</p><span className="village-season"><span />Musim bertumbuh</span></section>
     {menu && <nav ref={menuElement} id="village-locations" className="village-location-menu" aria-label="Daftar lokasi portofolio"><span className="village-eyebrow">Mau mampir ke mana?</span>{LOCATIONS.map((item) => <button key={item.id} onClick={() => openLocation(item)}><span className="village-location-number" style={{ background: item.color }}>{item.number}</span><span><strong>{item.label}</strong><small>{item.subtitle}</small></span><ArrowUpRight size={16} /></button>)}</nav>}
-    {!ready && !error && <div className="village-loading" role="status"><Sprout size={26} /><p>Menyiapkan desa…</p></div>}
-    {error && <section className="village-error" role="status"><h2>Dunia sedang beristirahat</h2><p>{error}</p><div><button className="village-button" onClick={retry}>Muat ulang dunia</button><button className="village-inline-link" onClick={() => setMenu(true)}>Daftar Lokasi <ArrowUpRight size={16} /></button></div></section>}
+    {!ready && !error && <div className="village-loading" role="status"><Sprout size={26} /><p>Menyiapkan taman…</p></div>}
+    {error && <section className="village-error" role="status"><h2>Taman sedang beristirahat</h2><p>{error}</p><div><button className="village-button" onClick={retry}>Muat ulang taman</button><button className="village-inline-link" onClick={() => setMenu(true)}>Daftar Lokasi <ArrowUpRight size={16} /></button></div></section>}
     <div className="village-bottom">
       <div className="village-controls" id="village-controls">
         <Compass size={19} />

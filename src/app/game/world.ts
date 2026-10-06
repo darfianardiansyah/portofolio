@@ -115,7 +115,7 @@ export function createWorld() {
     });
     const merged = mergeGeometries(copies);
     copies.forEach((copy) => copy.dispose());
-    if (!merged) throw new Error("Geometri desa gagal disiapkan");
+    if (!merged) throw new Error("Geometri taman gagal disiapkan");
     meshes.forEach((mesh) => world.remove(mesh));
     world.add(new THREE.Mesh(merged, material));
   }

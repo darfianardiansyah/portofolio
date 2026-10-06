@@ -10,7 +10,7 @@ function Pages() {
   const location = useLocation();
   return <>
     <RouteBoundary key={location.pathname}>
-      <Suspense fallback={<main className="grid min-h-screen place-items-center bg-[#f6f1df] text-[#253f35]" role="status">Menyiapkan desa…</main>}>
+      <Suspense fallback={<main className="grid min-h-screen place-items-center bg-[#f6f1df] text-[#253f35]" role="status">Menyiapkan taman…</main>}>
         <Routes>
           <Route path="/" element={<PortfolioPage />} />
           <Route path="/3d" element={<GamePage />} />

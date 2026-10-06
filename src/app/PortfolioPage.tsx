@@ -14,6 +14,7 @@ import {
   ImagePlus,
   Mail,
   ShieldCheck,
+  Sprout,
   Terminal,
   X,
 } from "lucide-react";
@@ -266,7 +267,8 @@ function Hero() {
               {HERO_COPY.secondaryCta}
             </a>
             <Link to="/3d" className="inline-flex items-center justify-center gap-2 rounded-full border border-emerald-300 bg-emerald-50 px-6 py-3 text-sm font-semibold text-emerald-900 transition hover:bg-emerald-100">
-              Jelajahi Dunia <ArrowUpRight size={17} aria-hidden="true" />
+              <Sprout size={17} className="text-emerald-700" aria-hidden="true" />
+              Jelajahi Taman 3D <ArrowUpRight size={17} aria-hidden="true" />
             </Link>
           </motion.div>
 
