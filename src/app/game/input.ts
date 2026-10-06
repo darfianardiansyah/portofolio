@@ -1,5 +1,5 @@
 import { normalizeMovement } from "./collision";
-import type { Direction } from "./types";
+import type { Direction, Point } from "./types";
 
 const KEY_DIRECTION: Record<string, Direction> = {
   w: "up", ArrowUp: "up", s: "down", ArrowDown: "down",
@@ -9,8 +9,9 @@ const KEY_DIRECTION: Record<string, Direction> = {
 export function createInput(canvas: HTMLCanvasElement, interact: () => void) {
   const keyboard = new Map<string, Direction>();
   const pointers = new Map<number, Direction>();
+  let touchVector: Point | null = null;
   let paused = false;
-  const reset = () => { keyboard.clear(); pointers.clear(); };
+  const reset = () => { keyboard.clear(); pointers.clear(); touchVector = null; };
   const keyDown = (event: KeyboardEvent) => {
     // Controls only own the keyboard while the world itself has focus.
     if (paused || document.activeElement !== canvas || event.ctrlKey || event.metaKey || event.altKey) return;
@@ -32,9 +33,17 @@ export function createInput(canvas: HTMLCanvasElement, interact: () => void) {
       if (direction === null) pointers.delete(id);
       else if (!paused) pointers.set(id, direction);
     },
+    setVector(vector: Point | null) {
+      if (paused || !vector) touchVector = null;
+      else touchVector = vector;
+    },
     movement() {
+      if (paused) return { x: 0, z: 0 };
+      if (touchVector) {
+        return normalizeMovement(touchVector.x, touchVector.z);
+      }
       const held = new Set([...keyboard.values(), ...pointers.values()]);
-      return paused ? { x: 0, z: 0 } : normalizeMovement(Number(held.has("right")) - Number(held.has("left")), Number(held.has("down")) - Number(held.has("up")));
+      return normalizeMovement(Number(held.has("right")) - Number(held.has("left")), Number(held.has("down")) - Number(held.has("up")));
     },
     dispose() {
       reset();

@@ -55,10 +55,40 @@ export default function GamePage() {
     {!ready && !error && <div className="village-loading" role="status"><Sprout size={26} /><p>Menyiapkan desa…</p></div>}
     {error && <section className="village-error" role="status"><h2>Dunia sedang beristirahat</h2><p>{error}</p><div><button className="village-button" onClick={retry}>Muat ulang dunia</button><button className="village-inline-link" onClick={() => setMenu(true)}>Daftar Lokasi <ArrowUpRight size={16} /></button></div></section>}
     <div className="village-bottom">
-      <div className="village-controls" id="village-controls"><Compass size={19} /><div><strong>Pelan-pelan, jelajahi saja.</strong><p><kbd>W A S D</kbd> / panah untuk berjalan · <kbd>E</kbd> untuk mampir</p></div></div>
-      <div className="village-near" aria-live="polite">{near && !error ? <button onClick={() => openLocation(near)} disabled={Boolean(location) || menu}><span className="village-location-number" style={{ background: near.color }}>{near.number}</span><span><strong>{near.label}</strong><small>Tekan E untuk mampir</small></span><ArrowUpRight size={18} /></button> : <span>Ikuti jalan menuju rumah dengan penanda.</span>}</div>
+      <div className="village-controls" id="village-controls">
+        <Compass size={19} />
+        <div>
+          <strong>Pelan-pelan, jelajahi saja.</strong>
+          <p className="village-desktop-hint"><kbd>W A S D</kbd> / panah untuk berjalan · <kbd>E</kbd> untuk mampir</p>
+          <p className="village-mobile-hint">Gunakan kontrol sentuh · Tekan [E] untuk mampir</p>
+        </div>
+      </div>
+      <div className="village-near" aria-live="polite">
+        {near && !error ? (
+          <button onClick={() => openLocation(near)} disabled={Boolean(location) || menu}>
+            <span className="village-location-number" style={{ background: near.color }}>{near.number}</span>
+            <span>
+              <strong>{near.label}</strong>
+              <small className="village-desktop-hint">Tekan E untuk mampir</small>
+              <small className="village-mobile-hint">Ketuk [E] atau kartu untuk mampir</small>
+            </span>
+            <ArrowUpRight size={18} />
+          </button>
+        ) : (
+          <span>
+            <span className="village-desktop-hint">Ikuti jalan menuju rumah dengan penanda.</span>
+            <span className="village-mobile-hint">Gunakan kontrol sentuh untuk menuju rumah bertanda.</span>
+          </span>
+        )}
+      </div>
     </div>
-    <TouchControls disabled={!ready || Boolean(error) || Boolean(location) || menu} canInteract={Boolean(near)} onPointer={(id, direction) => engine.current?.input.setPointer(id, direction)} onInteract={() => { if (near) openLocation(near); }} />
+    <TouchControls
+      disabled={!ready || Boolean(error) || Boolean(location) || menu}
+      canInteract={Boolean(near)}
+      onPointer={(id, direction) => engine.current?.input.setPointer(id, direction)}
+      onMove={(vector) => engine.current?.input.setVector(vector)}
+      onInteract={() => { if (near) openLocation(near); }}
+    />
     <LocationPanel location={location} onClose={() => setLocation(null)} restoreFocus={() => { const element = returnFocus.current; if (element?.isConnected) element.focus({ preventScroll: true }); }} />
   </main>;
 }
